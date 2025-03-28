@@ -327,7 +327,7 @@ nav {
   font-size: 0.85rem;
 }
 
-/* Work Experience Section */
+/* Experience Section */
 .experience {
   padding: 6rem 2rem;
   background: rgba(255, 255, 255, 0.8);
@@ -556,6 +556,140 @@ nav {
   gap: 1rem;
 }
 
+/* Updated Achievements Section CSS */
+.achievements {
+  padding: 6rem 2rem;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.05), transparent);
+}
+
+.achievements .section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.achievement-item {
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  transition: all 1.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--gradient);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.achievement-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hover-shadow);
+}
+
+.achievement-item:hover::before {
+  opacity: 1;
+}
+
+.achievement-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.achievement-icon::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: var(--primary);
+  opacity: 0.1;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* Fixed animation for numbers and labels */
+.achievement-number,
+.achievement-label {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  animation: fadeInUp 1.2s forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Apply gradient text in a more reliable way */
+.achievement-number,
+.achievement-label {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fix for the rating specifically */
+.rating-divider {
+  color: var(--primary);
+  -webkit-text-fill-color: var(--primary);
+}
+
+.achievement-item p {
+  color: var(--text);
+  opacity: 0.8;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+/* Simplified fadeInUp animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 992px) {
+  .achievement-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .achievement-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Contact Section */
 .contact {
   padding: 6rem 2rem;
@@ -696,123 +830,6 @@ nav {
 
 .footer-social a:hover {
   color: var(--primary);
-}
-
-/* Achievements Section */
-.achievements {
-  padding: 6rem 2rem;
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.05), transparent);
-}
-
-.achievements .section-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.achievement-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.achievement-item {
-  background: white;
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: var(--card-shadow);
-  transition: all 0.8s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.achievement-label {
-  font-size: 2rem;
-  font-weight: 700;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0.5rem 0;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1.3s forwards;
-}
-
-.achievement-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: var(--gradient);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-.achievement-item:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--hover-shadow);
-}
-
-.achievement-item:hover::before {
-  opacity: 1;
-}
-
-.achievement-icon {
-  font-size: 2.5rem;
-  color: var(--primary);
-  margin-bottom: 1rem;
-  position: relative;
-}
-
-.achievement-icon::after {
-  content: "";
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background: var(--primary);
-  opacity: 0.1;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-}
-
-.achievement-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0.5rem 0;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1.3s forwards;
-  /* Add these lines to ensure the entire text is visible */
-  width: 100%;
-  display: inline-block;
-}
-
-.achievement-item:nth-child(2) .achievement-number {
-  animation-duration: 1.5s;
-}
-
-.achievement-item p {
-  color: var(--text);
-  opacity: 0.8;
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
-}
-
-.rating-divider {
-  color: var(--primary);
-  -webkit-text-fill-color: var(--primary);
 }
 
 /* Responsive adjustments */
