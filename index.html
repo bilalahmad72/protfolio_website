@@ -42,12 +42,24 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-      <div class="hero-content">
-        <h1>Bilal Ahmad</h1>
-        <p>Flutter Developer & Frontend Engineer</p>
-        <div class="hero-buttons">
-          <a href="#contact" class="btn btn-primary">Get in Touch</a>
-          <a href="#projects" class="btn btn-outline">View Work</a>
+      <div class="hero-content side-by-side">
+        <!-- Left side - Profile image with effects -->
+        <div class="profile-image-container">
+          <div class="profile-image-glow"></div>
+          <img
+            src="images/profile.jpg"
+            alt="Bilal Ahmad"
+            class="profile-image"
+          />
+        </div>
+        <!-- Right side - Text content -->
+        <div class="hero-text-content">
+          <h1>Bilal Ahmad</h1>
+          <p>Flutter Developer & Frontend Engineer</p>
+          <div class="hero-buttons">
+            <a href="#contact" class="btn btn-primary">Get in Touch</a>
+            <a href="#projects" class="btn btn-outline">View Work</a>
+          </div>
         </div>
       </div>
     </section>
@@ -82,7 +94,7 @@
       <div class="skills-grid">
         <div class="skill-card">
           <div class="skill-icon">
-            <i class="fa-brands fa-flutter"></i>
+            <i class="fa-solid fa-terminal"></i>
           </div>
           <h3>Flutter Development</h3>
           <p>
@@ -233,37 +245,58 @@
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-content">
-            <div class="timeline-date">2023 - Present</div>
-            <h3>Senior Flutter Developer</h3>
-            <p class="company">Tech Solutions Inc.</p>
+            <div class="timeline-date">Mar 2024 - Present</div>
+            <h3>Flutter Frontend Developer</h3>
+            <p class="company">EXP.</p>
             <ul class="timeline-details">
-              <li>Leading mobile app development projects</li>
-              <li>Mentoring junior developers</li>
-              <li>Implementing best practices and architecture patterns</li>
+              <li>Responsive & Consistent UI</li>
+              <li>BloC Architecture & Clean Code</li>
+              <li>App Testing & Bug Fixing</li>
+              <li>Working with team ( 10+ members )</li>
+              <li>Github & Slack for project management</li>
             </ul>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-content">
-            <div class="timeline-date">2021 - 2023</div>
+            <div class="timeline-date">Feb 2025 - Present</div>
             <h3>Frontend Developer</h3>
-            <p class="company">Digital Creations Ltd.</p>
+            <p class="company">Xs4Arabia Linux Services</p>
             <ul class="timeline-details">
-              <li>Developed responsive web applications</li>
+              <li>Developed responsive cross platform applications</li>
               <li>Optimized application performance</li>
-              <li>Collaborated with UX designers</li>
+              <li>Collaborated with UI UX designers</li>
+              <li>Developing POS application</li>
             </ul>
           </div>
         </div>
+
+        <!-- Upwork -->
         <div class="timeline-item">
           <div class="timeline-content">
-            <div class="timeline-date">2019 - 2021</div>
-            <h3>Mobile App Developer</h3>
-            <p class="company">Mobile Innovations Co.</p>
+            <div class="timeline-date">2020 - Present</div>
+            <h3>Flutter App Developer | Frontend Developer</h3>
+            <p class="company">Upwork & Fiverr</p>
             <ul class="timeline-details">
               <li>Built cross-platform mobile applications</li>
               <li>Integrated third-party APIs</li>
-              <li>Maintained existing applications</li>
+              <li>Flutter Apps Bug Fixing</li>
+              <li>Frontend Developer (HTML5, CSS3, Tailwind CSS)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Whooo -->
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-date">July 2021 - December 2023</div>
+            <h3>Flutter Mobile App Developer</h3>
+            <p class="company">Whooo</p>
+            <ul class="timeline-details">
+              <li>Built cross-platform mobile applications</li>
+              <li>Integrated third-party APIs</li>
+              <li>Firebase as Backend</li>
+              <li>App Deployment (Google Store, App Store)</li>
             </ul>
           </div>
         </div>
@@ -479,36 +512,56 @@
       </div>
     </section>
 
-    <!-- Achievements Section -->
+    <!-- Updated Achievements Section -->
     <section class="achievements" id="achievements">
+      <div class="section-header">
+        <h2>My Success Story</h2>
+        <p>Key accomplishments and statistics</p>
+      </div>
       <div class="achievement-grid">
         <div class="achievement-item">
           <div class="achievement-icon">
             <i class="fas fa-check-circle"></i>
           </div>
-          <div class="achievement-number">50+</div>
+          <div class="achievement-number">100+</div>
           <p>Projects Completed</p>
         </div>
         <div class="achievement-item">
           <div class="achievement-icon">
-            <i class="fas fa-users"></i>
+            <i class="fas fa-star"></i>
           </div>
-          <div class="achievement-number">30+</div>
-          <p>Happy Clients</p>
+          <div class="achievement-number">
+            <span>4.9</span><span class="rating-divider">/</span><span>5</span>
+          </div>
+          <p>Client Rating</p>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-icon">
+            <i class="fas fa-award"></i>
+          </div>
+          <div class="achievement-label">Top Rated</div>
+          <p>Freelancer Status</p>
         </div>
         <div class="achievement-item">
           <div class="achievement-icon">
             <i class="fas fa-clock"></i>
           </div>
-          <div class="achievement-number">5+</div>
+          <div class="achievement-number">1200+</div>
+          <p>Hours Logged</p>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="achievement-number">4+</div>
           <p>Years Experience</p>
         </div>
         <div class="achievement-item">
           <div class="achievement-icon">
-            <i class="fas fa-trophy"></i>
+            <i class="fas fa-sync-alt"></i>
           </div>
-          <div class="achievement-number">15+</div>
-          <p>Awards Won</p>
+          <div class="achievement-number">65%</div>
+          <p>Repeat Clients</p>
         </div>
       </div>
     </section>

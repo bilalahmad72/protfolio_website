@@ -230,3 +230,46 @@ document.addEventListener("DOMContentLoaded", () => {
     backToTopButton.classList.add("visible");
   }
 });
+
+// my new code
+
+// Make profile image interactive with mouse movement
+const profileContainer = document.querySelector(".profile-image-container");
+const profileImage = document.querySelector(".profile-image");
+
+if (profileContainer && profileImage) {
+  profileContainer.addEventListener("mousemove", (e) => {
+    const rect = profileContainer.getBoundingClientRect();
+    const xAxis = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+    const yAxis = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
+
+    profileImage.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${-yAxis}deg) scale(1.05)`;
+  });
+
+  profileContainer.addEventListener("mouseleave", () => {
+    profileImage.style.transform =
+      "perspective(1000px) rotateY(0) rotateX(0) scale(1)";
+  });
+
+  // Add parallax effect to floating icons
+  profileContainer.addEventListener("mousemove", (e) => {
+    const icons = document.querySelectorAll(".profile-image-floating-icons i");
+    const rect = profileContainer.getBoundingClientRect();
+    const xPos = (e.clientX - rect.left) / rect.width - 0.5;
+    const yPos = (e.clientY - rect.top) / rect.height - 0.5;
+
+    icons.forEach((icon, index) => {
+      const factor = (index + 1) * 5;
+      icon.style.transform = `translate(${xPos * factor}px, ${
+        yPos * factor
+      }px)`;
+    });
+  });
+
+  profileContainer.addEventListener("mouseleave", () => {
+    const icons = document.querySelectorAll(".profile-image-floating-icons i");
+    icons.forEach((icon) => {
+      icon.style.transform = "translate(0, 0)";
+    });
+  });
+}
