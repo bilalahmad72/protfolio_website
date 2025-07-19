@@ -136,10 +136,10 @@ if (contactForm) {
   const originalButtonText = submitButton.textContent;
 
   // Add real-time validation
-  const inputs = contactForm.querySelectorAll('input, textarea');
-  inputs.forEach(input => {
-    input.addEventListener('blur', validateField);
-    input.addEventListener('input', clearFieldError);
+  const inputs = contactForm.querySelectorAll("input, textarea");
+  inputs.forEach((input) => {
+    input.addEventListener("blur", validateField);
+    input.addEventListener("input", clearFieldError);
   });
 
   contactForm.addEventListener("submit", async (e) => {
@@ -165,13 +165,12 @@ if (contactForm) {
     try {
       // Simulate API call with delay
       await simulateFormSubmission(data);
-      
+
       // Show success message
       showSuccessMessage();
-      
+
       // Reset form
       contactForm.reset();
-      
     } catch (error) {
       // Show error message
       showErrorMessage(error.message);
@@ -185,45 +184,45 @@ if (contactForm) {
     const field = e.target;
     const value = field.value.trim();
     const fieldName = field.name;
-    
+
     clearFieldError(field);
-    
-    let error = '';
-    
+
+    let error = "";
+
     switch (fieldName) {
-      case 'name':
+      case "name":
         if (!value) {
-          error = 'Name is required';
+          error = "Name is required";
         } else if (value.length < 2) {
-          error = 'Name must be at least 2 characters';
+          error = "Name must be at least 2 characters";
         }
         break;
-      
-      case 'email':
+
+      case "email":
         if (!value) {
-          error = 'Email is required';
+          error = "Email is required";
         } else if (!isValidEmail(value)) {
-          error = 'Please enter a valid email address';
+          error = "Please enter a valid email address";
         }
         break;
-      
-      case 'subject':
+
+      case "subject":
         if (!value) {
-          error = 'Subject is required';
+          error = "Subject is required";
         } else if (value.length < 5) {
-          error = 'Subject must be at least 5 characters';
+          error = "Subject must be at least 5 characters";
         }
         break;
-      
-      case 'message':
+
+      case "message":
         if (!value) {
-          error = 'Message is required';
+          error = "Message is required";
         } else if (value.length < 10) {
-          error = 'Message must be at least 10 characters';
+          error = "Message must be at least 10 characters";
         }
         break;
     }
-    
+
     if (error) {
       showFieldError(field, error);
     }
@@ -231,57 +230,71 @@ if (contactForm) {
 
   function clearFieldError(field) {
     if (field.target) field = field.target; // Handle event object
-    
-    field.classList.remove('error');
-    const errorElement = field.parentNode.querySelector('.field-error');
+
+    field.classList.remove("error");
+    const errorElement = field.parentNode.querySelector(".field-error");
     if (errorElement) {
       errorElement.remove();
     }
   }
 
   function showFieldError(field, message) {
-    field.classList.add('error');
-    
-    const errorElement = document.createElement('span');
-    errorElement.className = 'field-error';
+    field.classList.add("error");
+
+    const errorElement = document.createElement("span");
+    errorElement.className = "field-error";
     errorElement.textContent = message;
-    
+
     field.parentNode.appendChild(errorElement);
   }
 
   function validateForm(data) {
     const errors = [];
-    
+
     if (!data.name || data.name.trim().length < 2) {
-      errors.push({ field: 'name', message: 'Name must be at least 2 characters' });
+      errors.push({
+        field: "name",
+        message: "Name must be at least 2 characters",
+      });
     }
-    
+
     if (!data.email || !isValidEmail(data.email)) {
-      errors.push({ field: 'email', message: 'Please enter a valid email address' });
+      errors.push({
+        field: "email",
+        message: "Please enter a valid email address",
+      });
     }
-    
+
     if (!data.subject || data.subject.trim().length < 5) {
-      errors.push({ field: 'subject', message: 'Subject must be at least 5 characters' });
+      errors.push({
+        field: "subject",
+        message: "Subject must be at least 5 characters",
+      });
     }
-    
+
     if (!data.message || data.message.trim().length < 10) {
-      errors.push({ field: 'message', message: 'Message must be at least 10 characters' });
+      errors.push({
+        field: "message",
+        message: "Message must be at least 10 characters",
+      });
     }
-    
+
     return errors;
   }
 
   function displayErrors(errors) {
-    errors.forEach(error => {
+    errors.forEach((error) => {
       const field = contactForm.querySelector(`[name="${error.field}"]`);
       if (field) {
         showFieldError(field, error.message);
       }
     });
-    
+
     // Focus on first error field
     if (errors.length > 0) {
-      const firstErrorField = contactForm.querySelector(`[name="${errors[0].field}"]`);
+      const firstErrorField = contactForm.querySelector(
+        `[name="${errors[0].field}"]`
+      );
       if (firstErrorField) {
         firstErrorField.focus();
       }
@@ -289,56 +302,57 @@ if (contactForm) {
   }
 
   function clearAllErrors() {
-    const errorElements = contactForm.querySelectorAll('.field-error');
-    errorElements.forEach(el => el.remove());
-    
-    const errorFields = contactForm.querySelectorAll('.error');
-    errorFields.forEach(field => field.classList.remove('error'));
+    const errorElements = contactForm.querySelectorAll(".field-error");
+    errorElements.forEach((el) => el.remove());
+
+    const errorFields = contactForm.querySelectorAll(".error");
+    errorFields.forEach((field) => field.classList.remove("error"));
   }
 
   function setLoadingState(loading) {
     if (loading) {
       submitButton.disabled = true;
-      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-      submitButton.classList.add('loading');
+      submitButton.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      submitButton.classList.add("loading");
     } else {
       submitButton.disabled = false;
       submitButton.textContent = originalButtonText;
-      submitButton.classList.remove('loading');
+      submitButton.classList.remove("loading");
     }
   }
 
   function showSuccessMessage() {
-    const successMessage = document.createElement('div');
-    successMessage.className = 'form-message success';
+    const successMessage = document.createElement("div");
+    successMessage.className = "form-message success";
     successMessage.innerHTML = `
       <i class="fas fa-check-circle"></i>
       <p>Thank you! Your message has been sent successfully. I'll get back to you soon.</p>
     `;
-    
+
     contactForm.parentNode.insertBefore(successMessage, contactForm);
-    
+
     // Remove success message after 5 seconds
     setTimeout(() => {
       if (successMessage.parentNode) {
         successMessage.remove();
       }
     }, 5000);
-    
+
     // Scroll to success message
-    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    successMessage.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   function showErrorMessage(message) {
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'form-message error';
+    const errorMessage = document.createElement("div");
+    errorMessage.className = "form-message error";
     errorMessage.innerHTML = `
       <i class="fas fa-exclamation-circle"></i>
       <p>Sorry, there was an error sending your message: ${message}. Please try again or contact me directly.</p>
     `;
-    
+
     contactForm.parentNode.insertBefore(errorMessage, contactForm);
-    
+
     // Remove error message after 7 seconds
     setTimeout(() => {
       if (errorMessage.parentNode) {
@@ -353,23 +367,35 @@ if (contactForm) {
   }
 
   async function simulateFormSubmission(data) {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Simulate random success/failure for demo
-    // In real implementation, this would be an actual API call
-    if (Math.random() > 0.1) { // 90% success rate
-      console.log('Form submitted successfully:', data);
-      
-      // You can integrate with services like:
-      // - Formspree (https://formspree.io/)
-      // - Netlify Forms
-      // - EmailJS (https://www.emailjs.com/)
-      // - Your own backend API
-      
+    // Real EmailJS implementation
+    try {
+      // Replace these with your actual EmailJS service details
+      const serviceID = "service_cxe2wpv";
+      const templateID = "template_8md4a0c";
+
+      // Prepare template parameters
+      const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        subject: data.subject,
+        message: data.message,
+        to_email: "bilalahmad72.official@gmail.com", // Your email address
+      };
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        serviceID,
+        templateID,
+        templateParams
+      );
+
+      console.log("Email sent successfully:", response);
       return { success: true };
-    } else {
-      throw new Error('Network error occurred');
+    } catch (error) {
+      console.error("Email sending failed:", error);
+      throw new Error(
+        "Failed to send email. Please try again or contact me directly."
+      );
     }
   }
 }
