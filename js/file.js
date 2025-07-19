@@ -367,36 +367,14 @@ if (contactForm) {
   }
 
   async function simulateFormSubmission(data) {
-    // Real EmailJS implementation
-    try {
-      // Replace these with your actual EmailJS service details
-      const serviceID = "service_cxe2wpv";
-      const templateID = "template_8md4a0c";
-
-      // Prepare template parameters
-      const templateParams = {
-        from_name: data.name,
-        from_email: data.email,
-        subject: data.subject,
-        message: data.message,
-        to_email: "bilalahmad72.official@gmail.com", // Your email address
-      };
-
-      // Send email using EmailJS
-      const response = await emailjs.send(
-        serviceID,
-        templateID,
-        templateParams
-      );
-
-      console.log("Email sent successfully:", response);
-      return { success: true };
-    } catch (error) {
-      console.error("Email sending failed:", error);
-      throw new Error(
-        "Failed to send email. Please try again or contact me directly."
-      );
-    }
+    // Simulate network delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Log form data (for demo purposes)
+    console.log('Form submitted successfully:', data);
+    
+    // Always return success for static demo
+    return { success: true };
   }
 }
 
