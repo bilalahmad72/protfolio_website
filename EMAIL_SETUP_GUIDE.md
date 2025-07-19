@@ -15,8 +15,8 @@ To make your contact form actually send emails to your mailbox, follow these ste
 3. Choose your email provider (Gmail, Outlook, Yahoo, etc.)
 4. For Gmail:
    - Click "Gmail"
-   - Click "Connect Account" 
-   - Sign in with your Google account (`bilalahmad72.official@gmail.com`)
+   - Click "Connect Account"
+   - Sign in with your Google account (`test@gmail.com`)
    - Allow EmailJS to access your Gmail
 5. Note down your **Service ID** (something like `service_abc123`)
 
@@ -31,6 +31,7 @@ To make your contact form actually send emails to your mailbox, follow these ste
 **Subject:** `New Contact Form Message: {{subject}}`
 
 **Content:**
+
 ```
 Hello Bilal,
 
@@ -58,21 +59,23 @@ This email was sent from your portfolio website contact form.
 Replace the placeholder values in your code:
 
 ### In `index.html` (line 825):
+
 ```javascript
 emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
 ```
 
 ### In `js/file.js` (lines 359-360):
+
 ```javascript
-const serviceID = 'YOUR_SERVICE_ID';    // Replace with your service ID
-const templateID = 'YOUR_TEMPLATE_ID';  // Replace with your template ID
+const serviceID = "YOUR_SERVICE_ID"; // Replace with your service ID
+const templateID = "YOUR_TEMPLATE_ID"; // Replace with your template ID
 ```
 
 ## Step 6: Test Your Form
 
 1. Deploy your website
 2. Fill out the contact form with a test message
-3. Check your email inbox (`bilalahmad72.official@gmail.com`)
+3. Check your email inbox (`test@gmail.com`)
 4. You should receive the message within a few seconds
 
 ## Alternative Solutions
@@ -80,21 +83,25 @@ const templateID = 'YOUR_TEMPLATE_ID';  // Replace with your template ID
 If you prefer other services, here are alternatives:
 
 ### 1. Formspree (Easy Setup)
+
 - Go to [Formspree.io](https://formspree.io/)
 - Create account and get form endpoint
 - Replace EmailJS code with Formspree endpoint
 
 ### 2. Netlify Forms (If hosting on Netlify)
+
 - Add `netlify` attribute to your form
 - No additional setup needed
 
 ### 3. Your Own Backend
+
 - Create a Node.js/PHP backend
 - Use services like Nodemailer, SendGrid, or Mailgun
 
 ## Free Tier Limitations
 
 EmailJS free tier includes:
+
 - 200 emails per month
 - Basic email templates
 - Email service integrations
@@ -111,12 +118,14 @@ This should be sufficient for a portfolio contact form.
 ## Troubleshooting
 
 **Common Issues:**
+
 1. **401 Unauthorized**: Check your public key
 2. **404 Service/Template not found**: Verify service ID and template ID
 3. **Emails not received**: Check spam folder, verify email service connection
 4. **CORS errors**: Make sure you're testing on the actual domain, not `file://`
 
 **Testing Tips:**
+
 - Use browser developer tools to check for errors
 - Test with different email addresses
 - Check EmailJS dashboard for send logs
