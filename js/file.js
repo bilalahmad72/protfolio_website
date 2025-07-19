@@ -129,9 +129,19 @@ marquee.addEventListener("mouseleave", () => {
   marqueeContent.style.animationPlayState = "running";
 });
 
-// Form Submission
+// Enhanced Form Submission with Better UX
 const contactForm = document.querySelector(".contact-form");
 if (contactForm) {
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  const originalButtonText = submitButton.textContent;
+
+  // Add real-time validation
+  const inputs = contactForm.querySelectorAll('input, textarea');
+  inputs.forEach(input => {
+    input.addEventListener('blur', validateField);
+    input.addEventListener('input', clearFieldError);
+  });
+
   contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -139,20 +149,229 @@ if (contactForm) {
     const formData = new FormData(contactForm);
     const data = Object.fromEntries(formData);
 
-    // Basic form validation
-    for (let key in data) {
-      if (!data[key]) {
-        alert("Please fill in all fields");
-        return;
-      }
+    // Clear previous errors
+    clearAllErrors();
+
+    // Comprehensive validation
+    const errors = validateForm(data);
+    if (errors.length > 0) {
+      displayErrors(errors);
+      return;
     }
 
-    // Here you would typically send the data to a server
-    // For demo purposes, we'll just log it and show a success message
-    console.log("Form Data:", data);
-    alert("Message sent successfully!");
-    contactForm.reset();
+    // Show loading state
+    setLoadingState(true);
+
+    try {
+      // Simulate API call with delay
+      await simulateFormSubmission(data);
+      
+      // Show success message
+      showSuccessMessage();
+      
+      // Reset form
+      contactForm.reset();
+      
+    } catch (error) {
+      // Show error message
+      showErrorMessage(error.message);
+    } finally {
+      // Reset loading state
+      setLoadingState(false);
+    }
   });
+
+  function validateField(e) {
+    const field = e.target;
+    const value = field.value.trim();
+    const fieldName = field.name;
+    
+    clearFieldError(field);
+    
+    let error = '';
+    
+    switch (fieldName) {
+      case 'name':
+        if (!value) {
+          error = 'Name is required';
+        } else if (value.length < 2) {
+          error = 'Name must be at least 2 characters';
+        }
+        break;
+      
+      case 'email':
+        if (!value) {
+          error = 'Email is required';
+        } else if (!isValidEmail(value)) {
+          error = 'Please enter a valid email address';
+        }
+        break;
+      
+      case 'subject':
+        if (!value) {
+          error = 'Subject is required';
+        } else if (value.length < 5) {
+          error = 'Subject must be at least 5 characters';
+        }
+        break;
+      
+      case 'message':
+        if (!value) {
+          error = 'Message is required';
+        } else if (value.length < 10) {
+          error = 'Message must be at least 10 characters';
+        }
+        break;
+    }
+    
+    if (error) {
+      showFieldError(field, error);
+    }
+  }
+
+  function clearFieldError(field) {
+    if (field.target) field = field.target; // Handle event object
+    
+    field.classList.remove('error');
+    const errorElement = field.parentNode.querySelector('.field-error');
+    if (errorElement) {
+      errorElement.remove();
+    }
+  }
+
+  function showFieldError(field, message) {
+    field.classList.add('error');
+    
+    const errorElement = document.createElement('span');
+    errorElement.className = 'field-error';
+    errorElement.textContent = message;
+    
+    field.parentNode.appendChild(errorElement);
+  }
+
+  function validateForm(data) {
+    const errors = [];
+    
+    if (!data.name || data.name.trim().length < 2) {
+      errors.push({ field: 'name', message: 'Name must be at least 2 characters' });
+    }
+    
+    if (!data.email || !isValidEmail(data.email)) {
+      errors.push({ field: 'email', message: 'Please enter a valid email address' });
+    }
+    
+    if (!data.subject || data.subject.trim().length < 5) {
+      errors.push({ field: 'subject', message: 'Subject must be at least 5 characters' });
+    }
+    
+    if (!data.message || data.message.trim().length < 10) {
+      errors.push({ field: 'message', message: 'Message must be at least 10 characters' });
+    }
+    
+    return errors;
+  }
+
+  function displayErrors(errors) {
+    errors.forEach(error => {
+      const field = contactForm.querySelector(`[name="${error.field}"]`);
+      if (field) {
+        showFieldError(field, error.message);
+      }
+    });
+    
+    // Focus on first error field
+    if (errors.length > 0) {
+      const firstErrorField = contactForm.querySelector(`[name="${errors[0].field}"]`);
+      if (firstErrorField) {
+        firstErrorField.focus();
+      }
+    }
+  }
+
+  function clearAllErrors() {
+    const errorElements = contactForm.querySelectorAll('.field-error');
+    errorElements.forEach(el => el.remove());
+    
+    const errorFields = contactForm.querySelectorAll('.error');
+    errorFields.forEach(field => field.classList.remove('error'));
+  }
+
+  function setLoadingState(loading) {
+    if (loading) {
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      submitButton.classList.add('loading');
+    } else {
+      submitButton.disabled = false;
+      submitButton.textContent = originalButtonText;
+      submitButton.classList.remove('loading');
+    }
+  }
+
+  function showSuccessMessage() {
+    const successMessage = document.createElement('div');
+    successMessage.className = 'form-message success';
+    successMessage.innerHTML = `
+      <i class="fas fa-check-circle"></i>
+      <p>Thank you! Your message has been sent successfully. I'll get back to you soon.</p>
+    `;
+    
+    contactForm.parentNode.insertBefore(successMessage, contactForm);
+    
+    // Remove success message after 5 seconds
+    setTimeout(() => {
+      if (successMessage.parentNode) {
+        successMessage.remove();
+      }
+    }, 5000);
+    
+    // Scroll to success message
+    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function showErrorMessage(message) {
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'form-message error';
+    errorMessage.innerHTML = `
+      <i class="fas fa-exclamation-circle"></i>
+      <p>Sorry, there was an error sending your message: ${message}. Please try again or contact me directly.</p>
+    `;
+    
+    contactForm.parentNode.insertBefore(errorMessage, contactForm);
+    
+    // Remove error message after 7 seconds
+    setTimeout(() => {
+      if (errorMessage.parentNode) {
+        errorMessage.remove();
+      }
+    }, 7000);
+  }
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  async function simulateFormSubmission(data) {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Simulate random success/failure for demo
+    // In real implementation, this would be an actual API call
+    if (Math.random() > 0.1) { // 90% success rate
+      console.log('Form submitted successfully:', data);
+      
+      // You can integrate with services like:
+      // - Formspree (https://formspree.io/)
+      // - Netlify Forms
+      // - EmailJS (https://www.emailjs.com/)
+      // - Your own backend API
+      
+      return { success: true };
+    } else {
+      throw new Error('Network error occurred');
+    }
+  }
 }
 
 // Achievement numbers animation
