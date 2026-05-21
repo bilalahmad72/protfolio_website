@@ -93,7 +93,7 @@ export default function Testimonials() {
                 {/* Avatar with dynamic ring */}
                 <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
                   <div className="absolute inset-[-4px] rounded-full bg-gradient-to-tr from-neon-cyan via-neon-indigo to-neon-purple opacity-40 blur-sm" />
-                  <div className="absolute inset-0 rounded-full border border-neon-cyan/50 overflow-hidden bg-slate-900">
+                  <div className="absolute inset-0 rounded-full border border-neon-cyan/50 overflow-hidden bg-slate-900 flex items-center justify-center">
                     <Image
                       src={current.avatar}
                       alt={current.name}

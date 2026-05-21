@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import Image from 'next/image';
 import { Mail, MapPin } from 'lucide-react';
-import { GithubIcon, LinkedinIcon, InstagramIcon, WhatsappIcon, FiverrIcon, UpworkIcon } from '@/components/icons/SocialIcons';
+import { GithubIcon, LinkedinIcon, InstagramIcon, WhatsappIcon } from '@/components/icons/SocialIcons';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -153,19 +153,31 @@ export default function Footer() {
               href="https://www.upwork.com/freelancers/bilalahmad72"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-neon-cyan transition-colors"
+              className="text-slate-500 hover:text-neon-cyan transition-colors group/upwork"
               title="Upwork"
             >
-              <UpworkIcon size={18} />
+              <Image
+                src="/images/upwork.png"
+                alt="Upwork"
+                width={18}
+                height={18}
+                className="object-contain filter grayscale opacity-50 group-hover/upwork:grayscale-0 group-hover/upwork:opacity-100 transition-all duration-300"
+              />
             </a>
             <a
               href="https://www.fiverr.com/bilalahmad72"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-neon-cyan transition-colors"
+              className="text-slate-500 hover:text-neon-cyan transition-colors group/fiverr"
               title="Fiverr"
             >
-              <FiverrIcon size={18} />
+              <Image
+                src="/images/fiverr.png"
+                alt="Fiverr"
+                width={18}
+                height={18}
+                className="object-contain filter grayscale opacity-50 group-hover/fiverr:grayscale-0 group-hover/fiverr:opacity-100 transition-all duration-300"
+              />
             </a>
           </div>
         </div>

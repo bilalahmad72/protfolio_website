@@ -10,6 +10,7 @@ const navLinks = [
   { name: 'Projects', href: '#projects' },
   { name: 'Experience', href: '#experience' },
   { name: 'Testimonials', href: '#testimonials' },
+  { name: 'Books', href: 'https://codexabooks.gumroad.com/l/idea-to-product', external: true },
   { name: 'Blog', href: '#blog' },
   { name: 'Contact', href: '#contact' },
 ];
@@ -30,12 +31,14 @@ export default function Navbar() {
       // Determine active section
       const scrollPosition = window.scrollY + 100;
       for (const link of navLinks) {
-        const el = document.querySelector(link.href);
-        if (el) {
-          const top = (el as HTMLElement).offsetTop;
-          const height = (el as HTMLElement).offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(link.href);
+        if (link.href.startsWith('#')) {
+          const el = document.querySelector(link.href);
+          if (el) {
+            const top = (el as HTMLElement).offsetTop;
+            const height = (el as HTMLElement).offsetHeight;
+            if (scrollPosition >= top && scrollPosition < top + height) {
+              setActiveSection(link.href);
+            }
           }
         }
       }
@@ -45,7 +48,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isExternal?: boolean) => {
+    if (isExternal) {
+      setIsMobileMenuOpen(false);
+      return;
+    }
     e.preventDefault();
     setActiveSection(href);
     setIsMobileMenuOpen(false);
@@ -83,13 +90,15 @@ export default function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
-                onClick={(e) => handleClick(e, link.href)}
+                onClick={(e) => handleClick(e, link.href, link.external)}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
                 className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-md hover:text-neon-cyan ${
                   activeSection === link.href ? 'text-neon-cyan' : 'text-slate-400'
                 }`}
               >
                 {link.name}
-                {activeSection === link.href && (
+                {!link.external && activeSection === link.href && (
                   <motion.span 
                     layoutId="activeNavIndicator"
                     className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-neon-cyan to-neon-indigo shadow-[0_0_8px_#00F2FE]"
@@ -125,7 +134,9 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => handleClick(e, link.href)}
+                  onClick={(e) => handleClick(e, link.href, link.external)}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
                   className={`block px-3 py-3 rounded-lg text-base font-medium transition-colors ${
                     activeSection === link.href 
                       ? 'bg-white/5 text-neon-cyan border-l-2 border-neon-cyan shadow-[inset_4px_0_12px_rgba(0,242,254,0.05)]' 
