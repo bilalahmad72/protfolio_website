@@ -29,7 +29,7 @@ export default function Experience() {
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           kicker="04 — Track record"
-          title="Six years of"
+          title="4+ years of"
           accent="shipping"
           subtitle="My professional journey as a Flutter Developer and Frontend Engineer."
           className="mb-20"
