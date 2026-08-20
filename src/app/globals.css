@@ -1,86 +1,265 @@
 @import "tailwindcss";
 
+/*
+ * Palette — white, ink and blue, in two themes.
+ *
+ * Every colour below is a plain variable, and `@theme inline` only ever points
+ * Tailwind's keys at those variables. That indirection is what makes the dark
+ * theme a re-declaration of ~20 values rather than a second set of utilities:
+ * `text-slate-900` stays "the strongest text colour" in both themes, and the
+ * grey ramp simply runs the other way round in the dark.
+ *
+ * Theme resolution has three states. An explicit choice stamps
+ * `data-theme="light"|"dark"` on <html>; with nothing stamped the OS
+ * preference decides.
+ */
 :root {
-  --background: #0B0F19;
-  --foreground: #F8FAFC;
-  --neon-cyan: #00F2FE;
-  --neon-indigo: #7F00FF;
-  --neon-purple: #9D4EDD;
-  --glass-bg: rgba(15, 23, 42, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  color-scheme: light;
+
+  --surface: #FFFFFF;
+  --surface-muted: #F5F7FB;
+  --surface-sunken: #EDF1F8;
+  --foreground: #0B0D12;
+
+  --accent: #2C5CFF;
+  --accent-strong: #1B44D8;
+  --accent-deep: #10267A;
+  --accent-100: #E6ECFF;
+  --accent-200: #C6D5FF;
+
+  /* Interactive fills. Pinned across themes so white text stays legible on
+     them; `--accent` is the on-surface *text* colour and inverts instead. */
+  --accent-fill: #2C5CFF;
+  --accent-fill-strong: #1B44D8;
+
+  /* Fixed regardless of theme: code blocks and media scrims are always dark. */
+  --code-bg: #131822;
+  --code-header: #1F2634;
+  --scrim: rgba(11, 13, 18, 0.8);
+
+  --hairline: #E2E8F2;
+  --grid-line: rgba(16, 38, 122, 0.05);
+  --edge-tint: rgba(16, 38, 122, 0.05);
+
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-shadow: rgba(16, 38, 122, 0.18);
+
+  /* Grey ramp: 50 is the faintest surface, 900 the strongest text. */
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F4F9;
+  --slate-200: #E2E8F2;
+  --slate-300: #CBD3E1;
+  --slate-400: #94A0B4;
+  --slate-500: #63708A;
+  --slate-600: #48546B;
+  --slate-700: #333D50;
+  --slate-800: #1F2634;
+  --slate-900: #131822;
+
+  /* Motion — mirrored in src/lib/motion.ts so CSS and JS stay in step. */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Vertical rhythm for section padding. */
+  --section-y: clamp(5rem, 9vw, 8.5rem);
+}
+
+/*
+ * Dark theme. Navy rather than neutral black — it keeps the blue accent from
+ * looking like the only colour in the room, and the ramp is inverted so the
+ * same `slate-900`/`slate-600` pairings keep their meaning.
+ */
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface: #0C1020;
+  --surface-muted: #121728;
+  --surface-sunken: #090C18;
+  --foreground: #F2F5FA;
+
+  --accent: #6B90FF;
+  --accent-strong: #5C84FF;
+  --accent-deep: #A9C0FF;
+  --accent-100: #1A2340;
+  --accent-200: #24325C;
+
+  --hairline: #232B45;
+  --grid-line: rgba(140, 170, 255, 0.06);
+  --edge-tint: rgba(0, 0, 0, 0.35);
+
+  --glass-bg: rgba(18, 23, 40, 0.82);
+  --glass-shadow: rgba(0, 0, 0, 0.55);
+
+  --slate-50: #121728;
+  --slate-100: #171D31;
+  --slate-200: #232B45;
+  --slate-300: #38425F;
+  --slate-400: #5C6885;
+  --slate-500: #8792AC;
+  --slate-600: #A8B2C8;
+  --slate-700: #C6CEDE;
+  --slate-800: #E2E7F0;
+  --slate-900: #F2F5FA;
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background: var(--surface);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-sunken: var(--surface-sunken);
   --color-foreground: var(--foreground);
-  --color-neon-cyan: var(--neon-cyan);
-  --color-neon-indigo: var(--neon-indigo);
-  --color-neon-purple: var(--neon-purple);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-fill: var(--accent-fill);
+  --color-accent-fill-strong: var(--accent-fill-strong);
+
+  --color-code: var(--code-bg);
+  --color-code-header: var(--code-header);
+
+  --color-hairline: var(--hairline);
   --color-glass-bg: var(--glass-bg);
-  --color-glass-border: var(--glass-border);
+
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-900);
+
   --font-sans: 'Poppins', var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 96px;
 }
 
 body {
-  background-color: var(--background);
+  background-color: var(--surface);
   color: var(--foreground);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Custom scrollbar */
+/* ------------------------------------------------------------------ chrome */
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #070a13;
+  background: var(--surface-sunken);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: var(--slate-300);
+  border: 2px solid var(--surface-sunken);
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--slate-400);
 }
 
-/* Text selections */
 ::selection {
-  background: rgba(0, 242, 254, 0.2);
-  color: #00F2FE;
+  background: var(--accent-200);
+  color: var(--foreground);
 }
 
-/* Custom glow borders and utilities */
-.glow-text-cyan {
-  text-shadow: 0 0 10px rgba(0, 242, 254, 0.5), 0 0 20px rgba(0, 242, 254, 0.2);
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-.glow-text-purple {
-  text-shadow: 0 0 10px rgba(157, 78, 221, 0.5), 0 0 20px rgba(157, 78, 221, 0.2);
+/* -------------------------------------------------------------- typography */
+
+/*
+ * The accent word inside a heading. Flat colour rather than a gradient — at
+ * display sizes a single saturated hue reads as deliberate where a multi-hue
+ * sweep reads as decoration.
+ */
+.gradient-text {
+  color: var(--accent);
 }
 
-.border-glow-cyan {
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
-  border-color: rgba(0, 242, 254, 0.4) !important;
-}
+/* ----------------------------------------------------------------- surfaces */
 
-.border-glow-purple {
-  box-shadow: 0 0 15px rgba(157, 78, 221, 0.15);
-  border-color: rgba(157, 78, 221, 0.4) !important;
-}
-
+/*
+ * The house card surface. Warm elevated fill, a hairline highlight along the
+ * top edge, and a soft drop shadow for believable height above the backdrop.
+ * No coloured inner bloom — elevation alone carries the depth.
+ */
 .glassmorphism {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid var(--hairline);
+  box-shadow:
+    0 1px 2px rgba(11, 13, 18, 0.04),
+    0 12px 28px -18px var(--glass-shadow);
 }
 
-/* Keyframes for backgrounds */
+/* A static warm hairline for the hero and contact cards. */
+.aurora-border {
+  position: relative;
+  isolation: isolate;
+  border-color: var(--accent-200) !important;
+}
+
+/* --------------------------------------------------------------- overlays */
+
+/*
+ * Film grain. A single tiled SVG turbulence texture at very low opacity —
+ * it hides banding in the large background gradients and gives the whole page
+ * a photographic rather than digital feel.
+ */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.022;
+  mix-blend-mode: multiply;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+:root[data-theme='dark'] .film-grain {
+  mix-blend-mode: screen;
+  opacity: 0.03;
+}
+
+/* Cinematic vignette that darkens the page edges. */
+/*
+ * Edge tint. On the light theme a darkening vignette just looks like dirt, so
+ * it is barely there; the dark theme can take a real one, which is why the
+ * colour comes from a token rather than being hard-coded here.
+ */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 40%,
+    transparent 55%,
+    var(--edge-tint) 100%
+  );
+}
+
+/* ------------------------------------------------------------- animations */
+
 @keyframes float {
   0% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(180deg); }
@@ -95,7 +274,6 @@ body {
   animation: float 35s infinite linear;
 }
 
-/* Custom Marquee animation since Tailwind v4 marquee might not be in-built */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
@@ -104,18 +282,84 @@ body {
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 25s linear infinite;
+  animation: marquee 32s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
 
-/* Custom hide scrollbar */
+@keyframes shimmer {
+  0% { background-position: -180% 0; }
+  100% { background-position: 180% 0; }
+}
+
+/* Slow specular sweep across primary buttons. */
+.shimmer-sweep {
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.32) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4.5s var(--ease-soft) infinite;
+}
+
+@keyframes scroll-hint {
+  0%, 100% { transform: translateY(0); opacity: 0.35; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+.animate-scroll-hint {
+  animation: scroll-hint 2.2s var(--ease-soft) infinite;
+}
+
+/* ------------------------------------------------------------------ utils */
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.section-y {
+  padding-block: var(--section-y);
+}
+
+/* A hairline rule used between sections. */
+.section-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline) 30%,
+    var(--accent-200) 50%,
+    var(--hairline) 70%,
+    transparent
+  );
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .film-grain,
+  .vignette {
+    display: none;
+  }
 }

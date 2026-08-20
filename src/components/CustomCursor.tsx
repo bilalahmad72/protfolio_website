@@ -2,95 +2,96 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useFinePointer } from '@/hooks/useMediaQuery';
+
+const INTERACTIVE_SELECTOR = 'a, button, input, textarea, select, [role="button"]';
 
 export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  
+  const [isPressed, setIsPressed] = useState(false);
+  // A custom cursor is meaningless without a real pointing device.
+  const isEnabled = useFinePointer();
+
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const dotX = useMotionValue(-100);
   const dotY = useMotionValue(-100);
-  
-  const springConfig = { damping: 25, stiffness: 250, mass: 0.5 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+
+  const ringX = useSpring(cursorX, { damping: 26, stiffness: 240, mass: 0.5 });
+  const ringY = useSpring(cursorY, { damping: 26, stiffness: 240, mass: 0.5 });
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
-      dotX.set(e.clientX);
-      dotY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+    if (!isEnabled) return;
+
+    const moveCursor = (event: MouseEvent) => {
+      cursorX.set(event.clientX - 16);
+      cursorY.set(event.clientY - 16);
+      dotX.set(event.clientX);
+      dotY.set(event.clientY);
+      setIsVisible(true);
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
-
-    const handleHoverStart = () => setIsHovered(true);
-    const handleHoverEnd = () => setIsHovered(false);
-
-    window.addEventListener('mousemove', moveCursor);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
-
-    // Add listeners to all interactive items
-    const updateHoverListeners = () => {
-      const interactives = document.querySelectorAll('a, button, input, textarea, [role="button"]');
-      interactives.forEach((el) => {
-        el.addEventListener('mouseenter', handleHoverStart);
-        el.addEventListener('mouseleave', handleHoverEnd);
-      });
+    // Delegated hover tracking: one pair of listeners covers every interactive
+    // element, including anything mounted later by an animation.
+    const handleOver = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      if (target?.closest?.(INTERACTIVE_SELECTOR)) setIsHovered(true);
+    };
+    const handleOut = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      if (target?.closest?.(INTERACTIVE_SELECTOR)) setIsHovered(false);
     };
 
-    updateHoverListeners();
+    const handleLeave = () => setIsVisible(false);
+    const handleEnter = () => setIsVisible(true);
+    const handleDown = () => setIsPressed(true);
+    const handleUp = () => setIsPressed(false);
 
-    // Observer to handle dynamically loaded elements
-    const observer = new MutationObserver(updateHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('mousemove', moveCursor, { passive: true });
+    document.addEventListener('mouseover', handleOver);
+    document.addEventListener('mouseout', handleOut);
+    document.addEventListener('mouseleave', handleLeave);
+    document.addEventListener('mouseenter', handleEnter);
+    window.addEventListener('mousedown', handleDown);
+    window.addEventListener('mouseup', handleUp);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      observer.disconnect();
-      const interactives = document.querySelectorAll('a, button, input, textarea, [role="button"]');
-      interactives.forEach((el) => {
-        el.removeEventListener('mouseenter', handleHoverStart);
-        el.removeEventListener('mouseleave', handleHoverEnd);
-      });
+      document.removeEventListener('mouseover', handleOver);
+      document.removeEventListener('mouseout', handleOut);
+      document.removeEventListener('mouseleave', handleLeave);
+      document.removeEventListener('mouseenter', handleEnter);
+      window.removeEventListener('mousedown', handleDown);
+      window.removeEventListener('mouseup', handleUp);
     };
-  }, [cursorX, cursorY, isVisible]);
+  }, [cursorX, cursorY, dotX, dotY, isEnabled]);
 
-  if (!isVisible) return null;
+  if (!isEnabled || !isVisible) return null;
 
   return (
     <>
-      {/* Outer Glowing Ring */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-50 h-8 w-8 rounded-full border border-neon-cyan/40 bg-transparent mix-blend-screen shadow-[0_0_10px_rgba(0,242,254,0.1)] hidden md:block"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          scale: isHovered ? 1.5 : 1,
-          borderColor: isHovered ? 'var(--neon-purple)' : 'var(--neon-cyan)',
-          backgroundColor: isHovered ? 'rgba(157, 78, 221, 0.05)' : 'transparent',
-          boxShadow: isHovered 
-            ? '0 0 15px rgba(157, 78, 221, 0.3)' 
-            : '0 0 10px rgba(0, 242, 254, 0.1)',
-        }}
-      />
-      {/* Inner Dot */}
-      <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-50 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neon-cyan hidden md:block"
-        style={{
-          x: dotX,
-          y: dotY,
-        }}
+        aria-hidden
+        className="pointer-events-none fixed top-0 left-0 z-50 hidden h-8 w-8 rounded-full border mix-blend-screen md:block"
+        style={{ x: ringX, y: ringY }}
         animate={{
-          scale: isHovered ? 0.5 : 1,
-          backgroundColor: isHovered ? 'var(--neon-purple)' : 'var(--neon-cyan)',
+          scale: isPressed ? 0.85 : isHovered ? 1.6 : 1,
+          borderColor: isHovered ? 'rgba(44,92,255,0.41)' : 'rgba(44,92,255,0.20)',
+          backgroundColor: isHovered ? 'rgba(44,92,255,0.03)' : 'rgba(0,0,0,0)',
+          boxShadow: isHovered
+            ? '0 0 18px rgba(44,92,255,0.16)'
+            : '0 0 10px rgba(44,92,255,0.05)',
+        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+      />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none fixed top-0 left-0 z-50 hidden h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full md:block"
+        style={{ x: dotX, y: dotY }}
+        animate={{
+          scale: isHovered ? 0.4 : 1,
+          backgroundColor: isHovered ? 'var(--accent-deep)' : 'var(--accent)',
         }}
         transition={{ type: 'tween', ease: 'linear', duration: 0.1 }}
       />

@@ -1,131 +1,214 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { ArrowRight, Code } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Code2, Sparkles, MouseIcon } from 'lucide-react';
+import HeroSceneLayer from '@/components/three/HeroSceneLayer';
+import TextReveal from '@/components/motion/TextReveal';
+import Reveal from '@/components/motion/Reveal';
+import MagneticButton from '@/components/motion/MagneticButton';
+import { EASE_CINEMATIC, riseIn, staggerParent } from '@/lib/motion';
+
+const HERO_STACK = ['Flutter', 'Dart', 'Riverpod', 'BLoC', 'GraphQL', 'PostgreSQL'];
 
 export default function Hero() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-    }
-  };
+  const sectionRef = useRef<HTMLElement | null>(null);
 
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring' as const, stiffness: 100, damping: 20 }
-    }
-  };
+  // Everything in the hero drifts at a slightly different rate as it leaves,
+  // which is what sells the depth between the 3D layer and the content.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 130]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
 
   const handleScrollTo = (id: string) => {
     const el = document.querySelector(id);
     if (el) {
       window.scrollTo({
         top: (el as HTMLElement).offsetTop - 80,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   };
 
   return (
-    <section 
-      id="home" 
-      className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 overflow-hidden"
+    <section
+      id="home"
+      ref={sectionRef}
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden pb-24 pt-28"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full z-10">
-        <motion.div 
-          variants={containerVariants}
+      {/* The WebGL core sits between the page background and the content. */}
+      <HeroSceneLayer className="z-0 opacity-70 [mask-image:radial-gradient(65%_65%_at_50%_45%,#000_35%,transparent_100%)]" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          style={{ y: contentY, opacity: contentOpacity }}
+          variants={staggerParent(0.1, 0.15)}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center"
+          className="grid grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-10"
         >
-          {/* Left Side: Avatar with Tech Aura */}
-          <motion.div 
-            variants={itemVariants}
-            className="lg:col-span-5 flex justify-center order-first lg:order-none"
+          {/* -------------------------------------------------------- portrait */}
+          <motion.div
+            variants={riseIn}
+            style={{ y: portraitY, scale: portraitScale }}
+            className="order-first flex justify-center lg:order-none lg:col-span-5"
           >
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
-              {/* Outer Pulsing Rotating Glow Ring */}
-              <div className="absolute inset-[-15px] rounded-full border-2 border-dashed border-neon-cyan/30 animate-[spin_40s_linear_infinite]" />
-              <div className="absolute inset-[-8px] rounded-full border-2 border-neon-purple/40 animate-[spin_25s_linear_infinite_reverse]" />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-neon-cyan via-neon-indigo to-neon-purple opacity-20 blur-2xl animate-pulse" />
+            <div className="relative h-64 w-64 sm:h-80 sm:w-80 md:h-[22rem] md:w-[22rem]">
+              {/* Concentric rings, each on its own axis and period. */}
+              <div className="absolute inset-[-26px] rounded-full border border-dashed border-accent/20 animate-[spin_50s_linear_infinite]" />
+              <div className="absolute inset-[-14px] rounded-full border border-accent-deep/25 animate-[spin_32s_linear_infinite_reverse]" />
+              <div className="absolute inset-[-14px] rounded-full border-t-2 border-accent/70 animate-[spin_9s_linear_infinite]" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-accent via-accent-strong to-accent-deep opacity-25 blur-3xl" />
 
-              {/* Inner Frame */}
-              <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-neon-cyan/50 p-2 bg-[#0B0F19]">
-                <div className="relative w-full h-full rounded-full overflow-hidden">
+              <div className="absolute inset-0 overflow-hidden rounded-full border border-slate-200 bg-surface/85 p-2 shadow-[0_30px_80px_-30px_rgba(44,92,255,0.20)] backdrop-blur-sm">
+                <div className="relative h-full w-full overflow-hidden rounded-full">
                   <Image
                     src="/images/profile.jpg"
                     alt="Bilal Ahmad"
                     fill
                     priority
-                    sizes="(max-width: 768px) 256px, 384px"
-                    className="object-cover scale-105 hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 768px) 256px, 352px"
+                    className="scale-105 object-cover saturate-[0.88] contrast-[1.04] transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110"
                   />
+                  {/* Cool grade over the portrait so it belongs to the scene. */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-accent-deep/25 via-transparent to-accent/10" />
+                  <div className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_50px_16px_rgba(255,255,255,0.35)]" />
                 </div>
               </div>
 
-              {/* Dynamic Tech Badges */}
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute bottom-4 -left-4 glassmorphism px-4 py-2 rounded-xl flex items-center gap-2 border border-neon-cyan/30"
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                className="glassmorphism absolute bottom-8 -left-5 flex items-center gap-2 rounded-xl border border-accent/25 px-3 py-1.5 sm:-left-8 sm:px-4 sm:py-2"
               >
-                <div className="w-2.5 h-2.5 rounded-full bg-neon-cyan animate-ping" />
-                <span className="text-xs font-semibold text-neon-cyan">Senior Developer</span>
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
+                </span>
+                <span className="text-xs font-semibold text-accent">Senior Developer</span>
               </motion.div>
 
-              <motion.div 
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="absolute top-8 -right-4 glassmorphism px-4 py-2 rounded-xl flex items-center gap-2 border border-neon-purple/30"
+              <motion.div
+                animate={{ y: [0, 12, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                className="glassmorphism absolute -top-3 -right-5 flex items-center gap-2 rounded-xl border border-accent-deep/25 px-3 py-1.5 sm:-top-2 sm:-right-10 sm:px-4 sm:py-2"
               >
-                <Code size={14} className="text-neon-purple" />
-                <span className="text-xs font-semibold text-neon-purple">Flutter Expert</span>
+                <Code2 size={14} className="text-accent-deep" />
+                <span className="text-xs font-semibold text-accent-deep">Flutter Expert</span>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+                className="glassmorphism absolute -bottom-5 right-2 flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-1.5 sm:-bottom-6 sm:right-6 sm:px-4 sm:py-2"
+              >
+                <Sparkles size={14} className="text-accent" />
+                <span className="text-xs font-semibold text-slate-800">4+ Years</span>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* Right Side: Text & Actions */}
-          <motion.div 
-            variants={itemVariants}
-            className="lg:col-span-7 text-center lg:text-left space-y-6"
-          >
-            <div className="inline-block px-3 py-1 rounded-full border border-neon-cyan/20 bg-neon-cyan/5 text-neon-cyan text-sm font-semibold tracking-wide">
-              Welcome to my portfolio
+          {/* ------------------------------------------------------------ copy */}
+          <div className="space-y-7 text-center lg:col-span-7 lg:text-left">
+            <motion.div variants={riseIn} className="flex justify-center lg:justify-start">
+              <span className="inline-flex items-center gap-2.5 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.24em] text-accent">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Available for new projects
+              </span>
+            </motion.div>
+
+            <div className="space-y-2">
+              <TextReveal
+                as="h1"
+                text="Hi, I am Bilal Ahmad"
+                delay={0.3}
+                className="text-4xl font-extrabold leading-[1.08] tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-[4.25rem]"
+                highlight={['Bilal', 'Ahmad']}
+                highlightClassName="gradient-text"
+              />
+              <TextReveal
+                as="p"
+                text="I build production-grade Flutter apps."
+                delay={0.65}
+                stagger={0.04}
+                className="text-xl font-semibold text-slate-700 sm:text-2xl"
+              />
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
-              Hi, I'm <span className="bg-gradient-to-r from-neon-cyan via-neon-indigo to-neon-purple bg-clip-text text-transparent glow-text-cyan">Bilal Ahmad</span>
-            </h1>
+            <Reveal delay={0.95} blur={6} distance={20}>
+              <p className="mx-auto max-w-2xl text-pretty text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
+                Senior Flutter Developer with{' '}
+                <span className="text-accent">4+ years</span> building production mobile apps. I
+                specialize in <span className="text-accent">Clean Architecture</span>,{' '}
+                <span className="text-accent">REST &amp; GraphQL API</span> integration, and custom
+                Flutter animations that make UIs feel alive. Comfortable across{' '}
+                <span className="text-accent-deep">Riverpod, BLoC, and Provider</span> — and
+                increasingly exploring{' '}
+                <span className="text-accent">vibe coding</span>{' '}
+                with Claude Code, Codex, Antigravity &amp; Cursor to ship faster without losing
+                code quality.
+              </p>
+            </Reveal>
 
-            <p className="text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
-              Senior Flutter Developer specializing in <span className="text-neon-cyan">Clean Architecture</span>, <span className="text-neon-purple">Riverpod / BLoC</span> state management, <span className="text-neon-cyan">REST & GraphQL API</span> integration, and <span className="text-neon-indigo">PostgreSQL</span> database design.
-            </p>
+            <Reveal delay={1.05} blur={0} distance={16}>
+              <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
+                {HERO_STACK.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 font-mono text-[11px] tracking-wide text-slate-600 transition-colors duration-300 hover:border-accent/30 hover:text-accent"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </Reveal>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-              <button
-                onClick={() => handleScrollTo('#contact')}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-neon-cyan via-neon-indigo to-neon-purple text-[#0B0F19] shadow-lg shadow-neon-cyan/20 hover:shadow-neon-cyan/40 transition-shadow duration-300 group cursor-pointer"
-              >
-                Get in Touch
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={() => handleScrollTo('#projects')}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold border border-white/10 hover:border-neon-cyan/50 hover:bg-neon-cyan/5 text-slate-200 hover:text-white transition-all cursor-pointer"
-              >
-                View Work
-              </button>
-            </div>
-          </motion.div>
+            <Reveal delay={1.15} blur={0} distance={18}>
+              <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row lg:justify-start">
+                <MagneticButton
+                  onClick={() => handleScrollTo('#contact')}
+                  className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-accent-fill via-accent-fill-strong to-[#10267A] px-8 py-4 font-semibold text-white shadow-[0_18px_40px_-18px_rgba(44,92,255,0.41)] transition-shadow duration-300 hover:shadow-[0_22px_60px_-16px_rgba(44,92,255,0.38)] sm:w-auto"
+                >
+                  <span className="pointer-events-none absolute inset-0 shimmer-sweep opacity-60" />
+                  <span className="relative flex items-center justify-center gap-2">
+                    Get in Touch
+                    <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </MagneticButton>
+
+                <MagneticButton
+                  onClick={() => handleScrollTo('#projects')}
+                  strength={10}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-8 py-4 font-semibold text-slate-800 backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:bg-accent/5 hover:text-accent sm:w-auto"
+                >
+                  View Work
+                </MagneticButton>
+              </div>
+            </Reveal>
+          </div>
         </motion.div>
       </div>
+
+      {/* --------------------------------------------------------- scroll cue */}
+      <motion.button
+        type="button"
+        onClick={() => handleScrollTo('#skills')}
+        aria-label="Scroll to content"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 1, ease: EASE_CINEMATIC }}
+        style={{ opacity: contentOpacity }}
+        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-slate-500 transition-colors hover:text-accent md:flex"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+        <MouseIcon size={18} className="animate-scroll-hint" />
+      </motion.button>
     </section>
   );
 }

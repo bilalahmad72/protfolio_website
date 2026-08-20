@@ -32,7 +32,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'years-experience',
-    value: '6+',
+    value: '4+',
     label: 'Years Experience',
     iconName: 'briefcase'
   },
