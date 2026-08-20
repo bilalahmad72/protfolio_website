@@ -16,10 +16,34 @@ export interface WorkExperience {
 }
 
 /**
- * Ordered newest first. `startYear` is the sort key rather than `duration`,
- * which is a display string and deliberately human-readable.
+ * The ongoing engagement leads, then the rest run newest first. The home page
+ * shows only the first few of these, so the current role has to be at the top
+ * rather than buried under contracts that have already ended.
+ *
+ * `startYear` is kept as a sort key rather than parsing `duration`, which is a
+ * display string and deliberately human-readable.
  */
 export const experiences: WorkExperience[] = [
+  {
+    id: 'exp',
+    role: 'Flutter Developer',
+    company: 'EXP.',
+    type: 'Part-time',
+    location: 'Hong Kong · Remote',
+    duration: 'March 2024 - Present',
+    startYear: 2024,
+    details: [
+      'Maintain and extend a cross-platform Flutter application shipping to web, iOS and Android from one codebase, built on Cubit-based Clean Architecture.',
+      'Diagnose and resolve production bugs, improving stability and reducing crash-related support tickets.',
+      'Integrate GraphQL APIs with typed response models and robust error handling.',
+      'Implement responsive design across the full range of device sizes and form factors.',
+      'Refactor toward clean, testable structures, which keeps team velocity up on new feature delivery.',
+      'Manage Git and GitHub workflows — branch strategy, pull requests and code review — to hold release quality steady across contributors.',
+      'Collaborate daily with a 10+ member cross-functional team, tracking work in Notion and communicating over Slack.'
+    ],
+    tags: ['Flutter', 'BLoC', 'Cubit', 'Clean Architecture', 'GraphQL', 'go_router', 'CI/CD', 'Code Review'],
+    shipped: ['CORE by EXP.OS (Android, iOS & Web)']
+  },
   {
     id: 'qognitiv',
     role: 'Flutter Developer',
@@ -59,26 +83,6 @@ export const experiences: WorkExperience[] = [
     ],
     tags: ['Flutter', 'Riverpod', 'Clean Architecture', 'CustomPainter', 'go_router', 'REST API', 'Design System'],
     shipped: ['Budggy Buyer (Android & iOS)']
-  },
-  {
-    id: 'exp',
-    role: 'Flutter Developer',
-    company: 'EXP.',
-    type: 'Part-time',
-    location: 'Hong Kong · Remote',
-    duration: 'March 2024 - Present',
-    startYear: 2024,
-    details: [
-      'Maintain and extend a cross-platform Flutter application shipping to web, iOS and Android from one codebase, built on Cubit-based Clean Architecture.',
-      'Diagnose and resolve production bugs, improving stability and reducing crash-related support tickets.',
-      'Integrate GraphQL APIs with typed response models and robust error handling.',
-      'Implement responsive design across the full range of device sizes and form factors.',
-      'Refactor toward clean, testable structures, which keeps team velocity up on new feature delivery.',
-      'Manage Git and GitHub workflows — branch strategy, pull requests and code review — to hold release quality steady across contributors.',
-      'Collaborate daily with a 10+ member cross-functional team, tracking work in Notion and communicating over Slack.'
-    ],
-    tags: ['Flutter', 'BLoC', 'Cubit', 'Clean Architecture', 'GraphQL', 'go_router', 'CI/CD', 'Code Review'],
-    shipped: ['CORE by EXP.OS (Android, iOS & Web)']
   },
   {
     id: 'iib-solutions',
