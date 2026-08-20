@@ -58,7 +58,7 @@ export default function Testimonials() {
     <section id="testimonials" className="section-y relative overflow-hidden bg-surface">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          kicker="04 — Social proof"
+          kicker="05 — Social proof"
           title="What clients"
           accent="actually say"
           subtitle="Feedback and reviews from managers and partners I worked with."

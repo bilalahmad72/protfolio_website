@@ -5,6 +5,7 @@ import Navbar from '@/components/sections/Navbar';
 import Hero from '@/components/sections/Hero';
 import Skills from '@/components/sections/Skills';
 import Projects from '@/components/sections/Projects';
+import Journey from '@/components/sections/Journey';
 import Experience from '@/components/sections/Experience';
 import Testimonials from '@/components/sections/Testimonials';
 import BlogSection from '@/components/sections/BlogSection';
@@ -30,6 +31,8 @@ export default function Home() {
       <Skills />
       <SectionRule />
       <Projects />
+      <SectionRule />
+      <Journey />
       <SectionRule />
       <Experience />
       <Testimonials />

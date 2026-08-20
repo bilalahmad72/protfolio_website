@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,6 +11,7 @@ const navLinks = [
   { name: 'Home', href: '#home' },
   { name: 'Skills', href: '#skills' },
   { name: 'Projects', href: '#projects' },
+  { name: 'Journey', href: '#journey' },
   { name: 'Experience', href: '#experience' },
   { name: 'Testimonials', href: '#testimonials' },
   { name: 'Blog', href: '#blog' },
@@ -17,6 +19,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('#home');
@@ -56,13 +59,22 @@ export default function Navbar() {
   }, [measure]);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const el = document.querySelector(href) as HTMLElement | null;
+
+    // On a sub-page such as /journey or /blog the section is not in the
+    // document, so let the browser navigate home to it instead of preventing
+    // a click that would otherwise do nothing at all.
+    if (!el) {
+      setIsMobileMenuOpen(false);
+      router.push(`/${href}`);
+      e.preventDefault();
+      return;
+    }
+
     e.preventDefault();
     setActiveSection(href);
     setIsMobileMenuOpen(false);
-    const el = document.querySelector(href) as HTMLElement | null;
-    if (el) {
-      window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
   };
 
   return (
