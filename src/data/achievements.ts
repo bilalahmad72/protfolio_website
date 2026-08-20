@@ -33,7 +33,7 @@ export const achievements: Achievement[] = [
   {
     id: 'years-experience',
     value: '4+',
-    label: 'Years Experience',
+    label: 'Years Shipping Production Apps',
     iconName: 'briefcase'
   },
   {
