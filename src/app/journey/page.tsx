@@ -6,6 +6,7 @@ import { journeyChapters, journeyIntro } from '@/data/journey';
 import { experiences } from '@/data/experience';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
+import HashScroll from '@/components/motion/HashScroll';
 
 export const metadata: Metadata = {
   title: 'My Journey as a Flutter Developer — Bilal Ahmad',
@@ -17,6 +18,7 @@ export default function JourneyPage() {
   return (
     <>
       <Navbar />
+      <HashScroll />
 
       <main className="flex-grow">
         <article className="relative z-10 mx-auto max-w-4xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
@@ -83,7 +85,8 @@ export default function JourneyPage() {
               {experiences.map((exp) => (
                 <li
                   key={exp.id}
-                  className="glassmorphism rounded-2xl border border-slate-200 p-7 sm:p-8"
+                  id={`role-${exp.id}`}
+                  className="glassmorphism scroll-mt-28 rounded-2xl border border-slate-200 p-7 sm:p-8 target:border-accent/50"
                 >
                   <div className="flex flex-col gap-2 border-b border-slate-200 pb-5 sm:flex-row sm:items-start sm:justify-between">
                     <div>

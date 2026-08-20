@@ -2,10 +2,14 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { Calendar } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, Calendar } from 'lucide-react';
 import { experiences } from '@/data/experience';
 import SectionHeading from '@/components/motion/SectionHeading';
 import { EASE_CINEMATIC } from '@/lib/motion';
+
+/** Bullets shown per card before the reader is sent to /journey. */
+const HIGHLIGHTS_PER_ROLE = 3;
 
 export default function Experience() {
   const timelineRef = useRef<HTMLDivElement | null>(null);
@@ -31,7 +35,7 @@ export default function Experience() {
           kicker="04 — Track record"
           title="4+ years of"
           accent="shipping"
-          subtitle="My professional journey as a Flutter Developer and Frontend Engineer."
+          subtitle="The highlights of each role. Open any one for the full breakdown — responsibilities, tech stack and what shipped."
           className="mb-20"
         />
 
@@ -85,14 +89,42 @@ export default function Experience() {
                   </div>
                 </div>
 
+                {/*
+                  Only the headline points. A visitor scanning the page wants
+                  the shape of each role, not seven bullets per card — the full
+                  list is one click away on /journey.
+                */}
                 <ul className="space-y-3.5">
-                  {exp.details.map((detail, idx) => (
+                  {exp.details.slice(0, HIGHLIGHTS_PER_ROLE).map((detail, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-sm leading-relaxed text-slate-700">
                       <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
                       {detail}
                     </li>
                   ))}
                 </ul>
+
+                <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-slate-200 pt-5">
+                  <Link
+                    href={`/journey#role-${exp.id}`}
+                    className="group/more inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
+                  >
+                    Read more
+                    <ArrowRight
+                      size={14}
+                      className="transition-transform duration-300 group-hover/more:translate-x-1"
+                    />
+                  </Link>
+
+                  {exp.details.length > HIGHLIGHTS_PER_ROLE && (
+                    <span className="text-xs text-slate-500">
+                      +{exp.details.length - HIGHLIGHTS_PER_ROLE}{' '}
+                      {exp.details.length - HIGHLIGHTS_PER_ROLE === 1
+                        ? 'more responsibility'
+                        : 'more responsibilities'}
+                      , plus tech stack and shipped apps
+                    </span>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}
