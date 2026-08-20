@@ -6,10 +6,17 @@ import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { experiences } from '@/data/experience';
 import SectionHeading from '@/components/motion/SectionHeading';
-import { EASE_CINEMATIC } from '@/lib/motion';
+import { EASE_CINEMATIC, viewportOnce } from '@/lib/motion';
 
 /** Bullets shown per card before the reader is sent to /journey. */
 const HIGHLIGHTS_PER_ROLE = 3;
+
+/**
+ * Roles shown on the home page. `experiences` is ordered newest first, so this
+ * is the recent run — the complete history is on /journey rather than turning
+ * this section into a page-long scroll.
+ */
+const ROLES_ON_HOME = 4;
 
 export default function Experience() {
   const timelineRef = useRef<HTMLDivElement | null>(null);
@@ -48,7 +55,7 @@ export default function Experience() {
             className="absolute top-0 bottom-0 left-0 w-px origin-top bg-gradient-to-b from-accent via-accent-strong to-accent-deep shadow-[0_10px_30px_-12px_rgba(44,92,255,0.25)]"
           />
 
-          {experiences.map((exp, index) => (
+          {experiences.slice(0, ROLES_ON_HOME).map((exp, index) => (
             <motion.div
               key={exp.id}
               initial={{ opacity: 0, x: -36, filter: 'blur(10px)' }}
@@ -129,6 +136,31 @@ export default function Experience() {
             </motion.div>
           ))}
         </div>
+
+        {experiences.length > ROLES_ON_HOME && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewportOnce}
+            transition={{ duration: 0.6 }}
+            className="mt-14 ml-4 pl-8 md:ml-32 md:pl-12"
+          >
+            <Link
+              href="/journey#roles"
+              className="group inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-accent/40 hover:text-accent"
+            >
+              See all {experiences.length} roles
+              <ArrowRight
+                size={16}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </Link>
+            <p className="mt-3 text-sm text-slate-500">
+              Going back to {experiences[experiences.length - 1].duration.split(' - ')[0]}, with the
+              full breakdown for each.
+            </p>
+          </motion.div>
+        )}
       </div>
     </section>
   );
