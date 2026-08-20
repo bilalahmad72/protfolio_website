@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bilalahmad72.com
 
-## Getting Started
+Personal portfolio for Bilal Ahmad — Senior Flutter Developer. A statically
+exported Next.js site with a three.js background layer and a token-driven design
+system that ships in both a light and a dark theme.
 
-First, run the development server:
+**Live:** [bilalahmad72.com](https://bilalahmad72.com)
+
+## Stack
+
+| | |
+|---|---|
+| Framework | Next.js 16.2.6 (App Router, Turbopack) |
+| Language | TypeScript 5, React 19.2 |
+| Styling | Tailwind CSS v4 |
+| Motion | Framer Motion 12 |
+| 3D | three.js 0.185 (raw WebGL renderer, hand-written GLSL) |
+| Icons | lucide-react, plus brand marks inlined from Simple Icons |
+| Output | `output: 'export'` — static HTML, no server runtime |
+
+## Getting started
+
+```bash
+npm install
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts: `npm run build` (static export into `out/`), `npm run start`,
+`npm run lint`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+src/
+├── app/                  # Routes, root layout, global stylesheet, favicon
+│   └── blog/[slug]/      # Statically generated article pages
+├── components/
+│   ├── sections/         # Page sections — Hero, Projects, Skills, Contact, …
+│   ├── motion/           # Reveal, TiltCard, CountUp, ScrollProgress, …
+│   ├── three/            # WebGL background and hero scene
+│   └── icons/            # Social and brand SVGs
+├── data/                 # Projects, skills, tech stack, testimonials, blog copy
+├── hooks/                # useThreeCanvas, media queries, reduced-motion
+└── lib/                  # Shared motion tokens and GLSL helpers
+```
 
-To learn more about Next.js, take a look at the following resources:
+Content lives in `src/data/` — adding a project or a testimonial means editing a
+typed array, not a component.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design system
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Colour flows through CSS variables. `@theme` only ever points Tailwind's keys at
+those variables, which is what makes the dark theme a re-declaration of about
+twenty values rather than a second set of utilities: `text-slate-900` stays "the
+strongest text colour" in both themes, and the grey ramp runs the other way in
+the dark.
 
-## Deploy on Vercel
+Two details worth knowing before changing colours:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Interactive fills use their own `--accent-fill` tokens.** The plain accent
+  brightens in the dark so it stays readable *as text*, which is exactly what
+  makes it a poor background for white text. The two roles are separate on
+  purpose — don't collapse them back together.
+- **Some surfaces are pinned dark in both themes.** Code blocks, media scrims and
+  blog tiles carry white text, so they must not follow the theme.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The theme is resolved by an inline script in the root layout before first paint,
+so there is no flash. It follows the OS preference until a visitor picks a side,
+after which the choice is remembered in `localStorage`.
+
+## 3D layer
+
+`WebGLBackground` and `HeroScene` drive `three.js` directly through
+`useThreeCanvas` — no react-three-fiber. Both canvases are transparent and sit
+behind the content, and both respect `prefers-reduced-motion`.
+
+The one non-obvious constraint: the canvas is created with `alpha: true`, so the
+browser treats its output as **premultiplied**. Every shader premultiplies its
+own RGB *after* the colourspace transfer (mirroring three's own chunk order) and
+composites source-over. Blending additively here saturates the alpha channel
+until the compositor clamps a washed-out frame — and on a light background,
+adding light is invisible anyway.
+
+## Deployment
+
+Pushing to `main` triggers [the Pages workflow](.github/workflows/deploy.yml), which builds
+the static export and publishes `out/` to GitHub Pages. The custom domain comes
+from `public/CNAME`. The workflow can also be run manually via
+`workflow_dispatch`.
+
+## Notes for contributors
+
+`AGENTS.md` applies to this repo: **this is not the Next.js you may know.** Check
+the guides in `node_modules/next/dist/docs/` before writing code against an API
+you remember from an earlier major version.
