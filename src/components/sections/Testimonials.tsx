@@ -55,7 +55,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="section-y relative overflow-hidden bg-[#0B0F19]/10">
+    <section id="testimonials" className="section-y relative overflow-hidden bg-surface">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           kicker="04 — Social proof"
@@ -76,15 +76,15 @@ export default function Testimonials() {
                 animate="center"
                 exit="exit"
                 style={{ transformStyle: 'preserve-3d' }}
-                className="glassmorphism relative flex flex-col items-center gap-8 rounded-3xl border border-white/5 p-8 md:flex-row md:gap-12 md:p-12"
+                className="glassmorphism relative flex flex-col items-center gap-8 rounded-3xl border border-slate-200 p-8 md:flex-row md:gap-12 md:p-12"
               >
-                <div className="pointer-events-none absolute right-8 bottom-6 text-white/5">
+                <div className="pointer-events-none absolute right-8 bottom-6 text-slate-900">
                   <Quote size={120} className="fill-current" />
                 </div>
 
                 <div className="relative h-24 w-24 flex-shrink-0 sm:h-28 sm:w-28">
-                  <div className="absolute inset-[-4px] rounded-full bg-gradient-to-tr from-neon-cyan via-neon-indigo to-neon-purple opacity-40 blur-sm" />
-                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full border border-neon-cyan/50 bg-slate-900">
+                  <div className="absolute inset-[-4px] rounded-full bg-gradient-to-tr from-accent via-accent-strong to-accent-deep opacity-40 blur-sm" />
+                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full border border-accent/50 bg-slate-200">
                     <Image
                       src={current.avatar}
                       alt={current.name}
@@ -96,13 +96,13 @@ export default function Testimonials() {
                 </div>
 
                 <div className="flex-grow space-y-6 text-center md:text-left">
-                  <p className="relative z-10 text-pretty text-sm italic leading-relaxed text-slate-200 sm:text-base md:text-lg">
+                  <p className="relative z-10 text-pretty text-sm italic leading-relaxed text-slate-800 sm:text-base md:text-lg">
                     &ldquo;{current.quote}&rdquo;
                   </p>
 
                   <div>
-                    <h4 className="text-lg font-bold text-slate-100">{current.name}</h4>
-                    <p className="mt-0.5 text-xs font-medium text-neon-cyan sm:text-sm">{current.role}</p>
+                    <h4 className="text-lg font-bold text-slate-900">{current.name}</h4>
+                    <p className="mt-0.5 text-xs font-medium text-accent sm:text-sm">{current.role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -112,7 +112,7 @@ export default function Testimonials() {
           <button
             onClick={prevTestimonial}
             aria-label="Previous testimonial"
-            className="absolute left-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-[#0B0F19]/60 text-slate-400 shadow-md shadow-black/20 backdrop-blur-md transition-all hover:scale-110 hover:border-neon-cyan/50 hover:text-neon-cyan active:scale-95 md:left-[-60px]"
+            className="absolute left-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-surface text-slate-600 shadow-md shadow-slate-900/10 backdrop-blur-md transition-all hover:scale-110 hover:border-accent/50 hover:text-accent active:scale-95 md:left-[-60px]"
           >
             <ChevronLeft size={20} />
           </button>
@@ -120,7 +120,7 @@ export default function Testimonials() {
           <button
             onClick={nextTestimonial}
             aria-label="Next testimonial"
-            className="absolute right-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-[#0B0F19]/60 text-slate-400 shadow-md shadow-black/20 backdrop-blur-md transition-all hover:scale-110 hover:border-neon-cyan/50 hover:text-neon-cyan active:scale-95 md:right-[-60px]"
+            className="absolute right-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-surface text-slate-600 shadow-md shadow-slate-900/10 backdrop-blur-md transition-all hover:scale-110 hover:border-accent/50 hover:text-accent active:scale-95 md:right-[-60px]"
           >
             <ChevronRight size={20} />
           </button>
@@ -134,8 +134,8 @@ export default function Testimonials() {
               aria-label={`Show testimonial ${idx + 1}`}
               className={`h-2.5 cursor-pointer rounded-full transition-all duration-300 ${
                 index === idx
-                  ? 'w-7 bg-neon-cyan shadow-[0_0_8px_#00F2FE]'
-                  : 'w-2.5 bg-slate-700 hover:bg-slate-600'
+                  ? 'w-7 bg-accent'
+                  : 'w-2.5 bg-slate-300 hover:bg-slate-400'
               }`}
             />
           ))}

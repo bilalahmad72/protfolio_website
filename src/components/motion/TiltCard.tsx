@@ -60,7 +60,7 @@ export default function TiltCard({
   const glareOpacity = useSpring(useTransform(hover, [0, 1], [0, 0.09]), SPRING);
   const glareBackground = useMotionTemplate`radial-gradient(420px circle at ${glareX} ${glareY}, rgba(255,255,255,0.9), transparent 60%)`;
 
-  const spotlightBackground = useMotionTemplate`radial-gradient(340px circle at ${glareX} ${glareY}, rgba(0,242,254,0.16), transparent 65%)`;
+  const spotlightBackground = useMotionTemplate`radial-gradient(340px circle at ${glareX} ${glareY}, rgba(44,92,255,0.07), transparent 65%)`;
   const spotlightOpacity = useSpring(useTransform(hover, [0, 1], [0, 1]), SPRING);
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {

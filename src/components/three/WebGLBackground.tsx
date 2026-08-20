@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as THREE from 'three';
-import { disposeObject, useThreeCanvas, type SceneFactory } from '@/hooks/useThreeCanvas';
+import { applyInkBlending, disposeObject, useThreeCanvas, type SceneFactory } from '@/hooks/useThreeCanvas';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const DUST_DEPTH = 70;
@@ -10,10 +10,10 @@ const DUST_SPREAD_X = 34;
 const DUST_SPREAD_Y = 22;
 
 const PALETTE = [
-  new THREE.Color('#00F2FE'),
-  new THREE.Color('#7F00FF'),
-  new THREE.Color('#9D4EDD'),
-  new THREE.Color('#CBD5F5'),
+  new THREE.Color('#2C5CFF'),
+  new THREE.Color('#6B90FF'),
+  new THREE.Color('#A9C0FF'),
+  new THREE.Color('#94A0B4'),
 ];
 
 const dustVertexShader = /* glsl */ `
@@ -62,9 +62,15 @@ void main() {
 
   // Soft core with a wide falloff reads as bokeh rather than a hard dot.
   float core = pow(smoothstep(0.5, 0.0, radius), 2.4);
-  gl_FragColor = vec4(vColor * core, core * vFade);
+
+  float alpha = core * vFade;
+  gl_FragColor = vec4(vColor, alpha);
 
   #include <colorspace_fragment>
+
+  // Premultiply last, mirroring three's chunk order for built-in
+  // materials: the transfer function applies to straight colour.
+  gl_FragColor.rgb *= gl_FragColor.a;
 }
 `;
 
@@ -116,9 +122,14 @@ void main() {
   float strength = (lines + fine) * horizon * edges * distanceFade;
   vec3 color = mix(uFarColor, uNearColor, horizon);
 
-  gl_FragColor = vec4(color, strength * (0.28 + sweep * 0.45));
+  float alpha = strength * (0.28 + sweep * 0.45);
+  gl_FragColor = vec4(color, alpha);
 
   #include <colorspace_fragment>
+
+  // Premultiply last, mirroring three's chunk order for built-in
+  // materials: the transfer function applies to straight colour.
+  gl_FragColor.rgb *= gl_FragColor.a;
 }
 `;
 
@@ -165,7 +176,6 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
     fragmentShader: dustFragmentShader,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
     uniforms: {
       uTime: { value: 0 },
       uSize: { value: 5.5 },
@@ -173,6 +183,7 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
       uPixelRatio: { value: renderer.getPixelRatio() },
     },
   });
+  applyInkBlending(dustMaterial);
 
   const dust = new THREE.Points(dustGeometry, dustMaterial);
   dust.frustumCulled = false;
@@ -185,16 +196,16 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
     fragmentShader: gridFragmentShader,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
     side: THREE.DoubleSide,
     uniforms: {
       uTime: { value: 0 },
       uScroll: { value: 0 },
       uDivisions: { value: 44 },
-      uNearColor: { value: new THREE.Color('#00F2FE') },
-      uFarColor: { value: new THREE.Color('#7F00FF') },
+      uNearColor: { value: new THREE.Color('#2C5CFF') },
+      uFarColor: { value: new THREE.Color('#A9C0FF') },
     },
   });
+  applyInkBlending(gridMaterial);
 
   const grid = new THREE.Mesh(gridGeometry, gridMaterial);
   grid.rotation.x = -Math.PI / 2;
@@ -248,7 +259,7 @@ export default function WebGLBackground() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-40 opacity-90 [mask-image:radial-gradient(120%_100%_at_50%_35%,#000_45%,transparent_100%)]"
+      className="pointer-events-none fixed inset-0 -z-40 opacity-70 [mask-image:radial-gradient(120%_100%_at_50%_35%,#000_45%,transparent_100%)]"
     >
       <canvas ref={canvasRef} className="h-full w-full" />
     </div>

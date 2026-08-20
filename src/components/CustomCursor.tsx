@@ -77,11 +77,11 @@ export default function CustomCursor() {
         style={{ x: ringX, y: ringY }}
         animate={{
           scale: isPressed ? 0.85 : isHovered ? 1.6 : 1,
-          borderColor: isHovered ? 'rgba(157,78,221,0.9)' : 'rgba(0,242,254,0.45)',
-          backgroundColor: isHovered ? 'rgba(157,78,221,0.06)' : 'rgba(0,0,0,0)',
+          borderColor: isHovered ? 'rgba(44,92,255,0.41)' : 'rgba(44,92,255,0.20)',
+          backgroundColor: isHovered ? 'rgba(44,92,255,0.03)' : 'rgba(0,0,0,0)',
           boxShadow: isHovered
-            ? '0 0 18px rgba(157,78,221,0.35)'
-            : '0 0 10px rgba(0,242,254,0.12)',
+            ? '0 0 18px rgba(44,92,255,0.16)'
+            : '0 0 10px rgba(44,92,255,0.05)',
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 24 }}
       />
@@ -91,7 +91,7 @@ export default function CustomCursor() {
         style={{ x: dotX, y: dotY }}
         animate={{
           scale: isHovered ? 0.4 : 1,
-          backgroundColor: isHovered ? 'var(--neon-purple)' : 'var(--neon-cyan)',
+          backgroundColor: isHovered ? 'var(--accent-deep)' : 'var(--accent)',
         }}
         transition={{ type: 'tween', ease: 'linear', duration: 0.1 }}
       />

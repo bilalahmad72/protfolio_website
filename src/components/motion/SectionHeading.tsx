@@ -36,15 +36,15 @@ export default function SectionHeading({
       className={`flex flex-col gap-5 ${isCentered ? 'items-center text-center' : 'items-start text-left'} ${className}`}
     >
       <Reveal blur={6} distance={16} duration={0.7}>
-        <span className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-neon-cyan/80">
-          <span className="h-px w-8 bg-gradient-to-r from-transparent to-neon-cyan/70" />
+        <span className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-accent/80">
+          <span className="h-px w-8 bg-gradient-to-r from-transparent to-accent/70" />
           {kicker}
         </span>
       </Reveal>
 
       <Reveal delay={0.06} distance={22} tilt>
         <h2 className="text-balance text-3xl font-extrabold tracking-[-0.02em] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
-          <span className="text-slate-50">{title}</span>
+          <span className="text-slate-900">{title}</span>
           {accent && <> <span className="gradient-text">{accent}</span></>}
         </h2>
       </Reveal>
@@ -55,7 +55,7 @@ export default function SectionHeading({
         whileInView={{ scaleX: 1, opacity: 1 }}
         viewport={{ once: true, amount: 0.6 }}
         transition={{ duration: 1, ease: EASE_CINEMATIC, delay: 0.15 }}
-        className={`h-px w-28 bg-gradient-to-r from-neon-cyan via-neon-indigo to-transparent ${
+        className={`h-px w-28 bg-gradient-to-r from-accent via-accent-strong to-transparent ${
           isCentered ? 'origin-center' : 'origin-left'
         }`}
       />
@@ -63,7 +63,7 @@ export default function SectionHeading({
       {subtitle && (
         <Reveal delay={0.12} blur={6} distance={18}>
           <p
-            className={`text-pretty text-sm leading-relaxed text-slate-400 sm:text-base ${
+            className={`text-pretty text-sm leading-relaxed text-slate-600 sm:text-base ${
               isCentered ? 'mx-auto max-w-2xl' : 'max-w-2xl'
             }`}
           >

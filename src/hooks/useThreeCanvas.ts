@@ -242,6 +242,26 @@ export function useThreeCanvas(
 }
 
 /** Frees every geometry and material reachable from `root`. */
+/**
+ * Normal `over` compositing for the 3D layers.
+ *
+ * The canvas is created with `alpha: true`, so the browser treats its output as
+ * premultiplied. Additive blending would be wrong twice over here: it saturates
+ * the alpha channel until the compositor clamps a washed-out frame, and on a
+ * white page adding light is invisible anyway. The scenes paint blue ink onto
+ * paper instead, so they need ordinary source-over.
+ *
+ * Shader materials must premultiply their own output (`rgb * alpha`);
+ * built-in materials get it from the `premultipliedAlpha` flag, which three
+ * also reads when picking the factors for `NormalBlending`.
+ */
+export function applyInkBlending(material: THREE.Material) {
+  material.premultipliedAlpha = true;
+  material.blending = THREE.NormalBlending;
+  material.needsUpdate = true;
+  return material;
+}
+
 export function disposeObject(root: THREE.Object3D) {
   root.traverse((child) => {
     const mesh = child as Partial<THREE.Mesh>;

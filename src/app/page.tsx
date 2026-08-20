@@ -7,7 +7,6 @@ import Skills from '@/components/sections/Skills';
 import Projects from '@/components/sections/Projects';
 import Experience from '@/components/sections/Experience';
 import Testimonials from '@/components/sections/Testimonials';
-import BooksSection from '@/components/sections/BooksSection';
 import BlogSection from '@/components/sections/BlogSection';
 import Achievements from '@/components/sections/Achievements';
 import Contact from '@/components/sections/Contact';
@@ -34,7 +33,6 @@ export default function Home() {
       <SectionRule />
       <Experience />
       <Testimonials />
-      <BooksSection />
       <BlogSection />
       <SectionRule />
       <Contact />

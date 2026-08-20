@@ -12,8 +12,8 @@ import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
 
 export default function Projects() {
   return (
-    <section id="projects" className="section-y relative overflow-hidden bg-[#0B0F19]/20">
-      <div className="pointer-events-none absolute right-[-10%] bottom-[10%] h-[40vw] w-[40vw] rounded-full bg-neon-purple/5 blur-[150px]" />
+    <section id="projects" className="section-y relative overflow-hidden bg-slate-50">
+      <div className="pointer-events-none absolute right-[-10%] bottom-[10%] h-[40vw] w-[40vw] rounded-full bg-accent-deep/5 blur-[150px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -30,77 +30,35 @@ export default function Projects() {
           whileInView="visible"
           viewport={viewportOnce}
           className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"
-          style={{ perspective: 1600 }}
         >
           {projects.map((project) => (
             <motion.div key={project.id} variants={tiltIn} className="h-full">
               <TiltCard max={7} lift={20} className="h-full rounded-2xl">
-                <div className="glassmorphism group flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 transition-colors duration-300 hover:border-neon-cyan/25">
-                  <div className="relative aspect-video w-full overflow-hidden bg-slate-950">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover opacity-85 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.08] group-hover:opacity-100"
-                    />
-
-                    {/* Keeps the title legible over any screenshot. */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-[#0B0F19]/10 to-transparent" />
-
-                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-slate-950/80 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
-                      {project.androidUrl && (
-                        <a
-                          href={project.androidUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-emerald-500 text-[#0B0F19] shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-transform hover:scale-110 active:scale-95"
-                          title="Google Play Store"
-                        >
-                          <Play size={18} fill="currentColor" />
-                        </a>
-                      )}
-                      {project.iosUrl && (
-                        <a
-                          href={project.iosUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-slate-200 text-[#0B0F19] shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-transform hover:scale-110 active:scale-95"
-                          title="Apple App Store"
-                        >
-                          <Apple size={18} fill="currentColor" />
-                        </a>
-                      )}
-                      {project.webUrl && (
-                        <a
-                          href={project.webUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-neon-cyan text-[#0B0F19] shadow-[0_0_15px_rgba(0,242,254,0.3)] transition-transform hover:scale-110 active:scale-95"
-                          title="Web Live Demo"
-                        >
-                          <Globe size={18} />
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-all hover:scale-110 hover:bg-white/20 active:scale-95"
-                          title="View Source Code"
-                        >
-                          <GithubIcon size={18} />
-                        </a>
-                      )}
+                <div className="glassmorphism group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 transition-colors duration-300 hover:border-accent/25">
+                  {/*
+                    These are shipped apps, so the artwork is a square store
+                    icon. Cropping one into a 16:9 frame mangles it, so the tile
+                    presents it at its own aspect on a tinted ground instead.
+                  */}
+                  <div className="relative aspect-video w-full overflow-hidden border-b border-slate-200 bg-gradient-to-br from-accent-100 via-white to-accent-200/60">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} app icon`}
+                        width={512}
+                        height={512}
+                        sizes="140px"
+                        className="h-[54%] w-auto rounded-[22%] shadow-[0_18px_40px_-18px_rgba(16,38,122,0.45)] transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
+                      />
                     </div>
+
                   </div>
 
                   <div className="flex flex-grow flex-col space-y-4 p-6">
-                    <h3 className="text-xl font-bold tracking-tight text-slate-100 transition-colors group-hover:text-neon-cyan">
+                    <h3 className="text-xl font-bold tracking-tight text-slate-900 transition-colors group-hover:text-accent">
                       {project.title}
                     </h3>
-                    <p className="flex-grow text-pretty text-sm leading-relaxed text-slate-400">
+                    <p className="flex-grow text-pretty text-sm leading-relaxed text-slate-600">
                       {project.description}
                     </p>
 
@@ -108,11 +66,63 @@ export default function Projects() {
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[10px] font-semibold text-slate-400 transition-all hover:border-neon-cyan/20 hover:text-neon-cyan sm:text-xs"
+                          className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold text-slate-600 transition-all hover:border-accent/20 hover:text-accent sm:text-xs"
                         >
                           {tag}
                         </span>
                       ))}
+                    </div>
+
+                    {/*
+                      Always visible rather than revealed on hover: a touch
+                      device has no hover state, so a hover-only row of links is
+                      unreachable there.
+                    */}
+                    <div className="flex flex-wrap gap-2 border-t border-slate-200 pt-4">
+                      {project.androidUrl && (
+                        <a
+                          href={project.androidUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-accent-fill px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-accent-fill-strong"
+                        >
+                          <Play size={13} fill="currentColor" />
+                          Google Play
+                        </a>
+                      )}
+                      {project.iosUrl && (
+                        <a
+                          href={project.iosUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-accent/40 hover:text-accent"
+                        >
+                          <Apple size={13} fill="currentColor" />
+                          App Store
+                        </a>
+                      )}
+                      {project.webUrl && (
+                        <a
+                          href={project.webUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-accent/40 hover:text-accent"
+                        >
+                          <Globe size={13} />
+                          Live Site
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-accent/40 hover:text-accent"
+                        >
+                          <GithubIcon size={13} />
+                          Source
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -43,28 +43,3 @@ export const skills: Skill[] = [
     iconName: 'database'
   }
 ];
-
-export const marqueeSkills = [
-  'Flutter',
-  'Dart',
-  'Clean Architecture',
-  'Riverpod',
-  'BLoC',
-  'Cubit',
-  'Provider',
-  'GetX',
-  'REST API',
-  'GraphQL',
-  'json_serialization',
-  'build_runner',
-  'go_router',
-  'Firebase',
-  'PostgreSQL',
-  'Responsive UI',
-  'CustomPainter',
-  'SVG Animations',
-  'Git & GitHub',
-  'CI/CD',
-  'Notion',
-  'Slack'
-];

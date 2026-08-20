@@ -3,7 +3,7 @@
 import React from 'react';
 import * as THREE from 'three';
 import { simplexNoise3D } from '@/lib/glsl';
-import { disposeObject, useThreeCanvas, type SceneFactory } from '@/hooks/useThreeCanvas';
+import { applyInkBlending, disposeObject, useThreeCanvas, type SceneFactory } from '@/hooks/useThreeCanvas';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const coreVertexShader = /* glsl */ `
@@ -56,6 +56,10 @@ void main() {
   gl_FragColor = vec4(color, alpha);
 
   #include <colorspace_fragment>
+
+  // Premultiply last, mirroring three's chunk order for built-in
+  // materials: the transfer function applies to straight colour.
+  gl_FragColor.rgb *= gl_FragColor.a;
 }
 `;
 
@@ -102,9 +106,15 @@ void main() {
   if (radius > 0.5) discard;
 
   float core = pow(smoothstep(0.5, 0.0, radius), 2.0);
-  gl_FragColor = vec4(vColor * core, core * vFade);
+
+  float alpha = core * vFade;
+  gl_FragColor = vec4(vColor, alpha);
 
   #include <colorspace_fragment>
+
+  // Premultiply last, mirroring three's chunk order for built-in
+  // materials: the transfer function applies to straight colour.
+  gl_FragColor.rgb *= gl_FragColor.a;
 }
 `;
 
@@ -119,9 +129,9 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
   const rig = new THREE.Group();
   scene.add(rig);
 
-  const colorA = new THREE.Color('#00F2FE');
-  const colorB = new THREE.Color('#9D4EDD');
-  const rimColor = new THREE.Color('#3FD8FF');
+  const colorA = new THREE.Color('#2C5CFF');
+  const colorB = new THREE.Color('#6B90FF');
+  const rimColor = new THREE.Color('#A9C0FF');
 
   /* ------------------------------------------------------------ the core */
   const coreGeometry = new THREE.IcosahedronGeometry(1.35, 20);
@@ -130,7 +140,6 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
     fragmentShader: coreFragmentShader,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
     side: THREE.FrontSide,
     uniforms: {
       uTime: { value: 0 },
@@ -141,6 +150,8 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
       uRimColor: { value: rimColor },
     },
   });
+  applyInkBlending(coreMaterial);
+
   const core = new THREE.Mesh(coreGeometry, coreMaterial);
   rig.add(core);
 
@@ -152,8 +163,9 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
     transparent: true,
     opacity: 0.09,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
   });
+  applyInkBlending(shellMaterial);
+
   const shell = new THREE.Mesh(shellGeometry, shellMaterial);
   rig.add(shell);
 
@@ -171,8 +183,8 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
       transparent: true,
       opacity: 0.26,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    });
+      });
+    applyInkBlending(material);
     const ring = new THREE.Mesh(geometry, material);
     ring.rotation.set(spec.tilt[0], spec.tilt[1], 0);
     rings.add(ring);
@@ -210,7 +222,6 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
     fragmentShader: haloFragmentShader,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
     uniforms: {
       uTime: { value: 0 },
       uPixelRatio: { value: renderer.getPixelRatio() },
@@ -218,6 +229,8 @@ const createScene: SceneFactory = ({ renderer, width, height, inputs }) => {
       uColorB: { value: colorB },
     },
   });
+  applyInkBlending(haloMaterial);
+
 
   const halo = new THREE.Points(haloGeometry, haloMaterial);
   halo.frustumCulled = false;
