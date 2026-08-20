@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, CheckCircle } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, InstagramIcon, WhatsappIcon } from '@/components/icons/SocialIcons';
+import SectionHeading from '@/components/motion/SectionHeading';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -56,30 +57,18 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
+    <section id="contact" className="section-y relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute top-[20%] right-[-15%] h-[40vw] w-[40vw] rounded-full bg-neon-purple/5 blur-[120px] pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center space-y-4 mb-20">
-          <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-3xl sm:text-4xl font-extrabold"
-          >
-            Let's <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent glow-text-cyan">Connect</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-slate-400 max-w-2xl mx-auto"
-          >
-            Get in touch for opportunities, collaboration, or just to say hi.
-          </motion.p>
-        </div>
+        <SectionHeading
+          kicker="07 — Get in touch"
+          title="Let us build"
+          accent="something good"
+          subtitle="Get in touch for opportunities, collaboration, or just to say hi."
+          className="mb-20"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
           {/* Left Side: Contact Information & Socials */}
@@ -204,7 +193,7 @@ export default function Contact() {
 
           {/* Right Side: Contact Form */}
           <div className="lg:col-span-7">
-            <div className="glassmorphism p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden">
+            <div className="glassmorphism aurora-border p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden">
               {/* Submission visual success state overlay */}
               {status === 'success' ? (
                 <motion.div 

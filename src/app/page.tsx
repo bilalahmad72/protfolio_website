@@ -13,6 +13,15 @@ import Achievements from '@/components/sections/Achievements';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/sections/Footer';
 
+/** Hairline gradient rule that separates two adjacent sections. */
+function SectionRule() {
+  return (
+    <div aria-hidden className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="section-rule" />
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -20,11 +29,14 @@ export default function Home() {
       <Hero />
       <Achievements />
       <Skills />
+      <SectionRule />
       <Projects />
+      <SectionRule />
       <Experience />
       <Testimonials />
       <BooksSection />
       <BlogSection />
+      <SectionRule />
       <Contact />
       <Footer />
     </>

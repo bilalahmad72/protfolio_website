@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Calendar, Smartphone, Layers, Laptop, ChevronLeft, ChevronRight } from 'lucide-react';
 import { blogs } from '@/data/blogs';
+import { useIsClient, useMediaQuery } from '@/hooks/useMediaQuery';
+import SectionHeading from '@/components/motion/SectionHeading';
 
 const categoryColors: Record<string, string> = {
   'Flutter': 'text-sky-400 bg-sky-400/10 border-sky-400/20',
@@ -20,28 +22,12 @@ const gradientThemes: Record<string, string> = {
 export default function BlogSection() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(3);
-  const [windowWidth, setWindowWidth] = useState<number | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    setWindowWidth(window.innerWidth);
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (windowWidth === null) return;
-    if (windowWidth >= 1024) {
-      setVisibleCount(3);
-    } else if (windowWidth >= 768) {
-      setVisibleCount(2);
-    } else {
-      setVisibleCount(1);
-    }
-  }, [windowWidth]);
+  // Breakpoints drive the carousel directly, so there is no resize listener and
+  // no render pass where the count is momentarily wrong.
+  const isMounted = useIsClient();
+  const isLarge = useMediaQuery('(min-width: 1024px)');
+  const isMedium = useMediaQuery('(min-width: 768px)');
+  const visibleCount = isLarge ? 3 : isMedium ? 2 : 1;
 
   const next = () => {
     setDirection(1);
@@ -75,19 +61,17 @@ export default function BlogSection() {
   // Pre-hydration placeholder layout to match server-side rendering exactly
   if (!isMounted) {
     return (
-      <section id="blog" className="py-24 relative overflow-hidden bg-[#0B0F19]/25">
+      <section id="blog" className="section-y relative overflow-hidden bg-[#0B0F19]/25">
         <div className="absolute top-[20%] right-[-10%] h-[35vw] w-[35vw] rounded-full bg-neon-indigo/5 blur-[120px] pointer-events-none" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Section Header */}
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold">
-              Latest <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent glow-text-cyan">Articles</span>
-            </h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">
-              Deep-dives, tutorials, and insights on mobile architecture and web architectures.
-            </p>
-          </div>
+          <SectionHeading
+            kicker="06 — Writing"
+            title="Notes from the"
+            accent="build log"
+            subtitle="Deep-dives, tutorials, and insights on mobile architecture and web architectures."
+            className="mb-16"
+          />
 
           <div className="flex flex-wrap justify-center gap-6 w-full">
             {blogs.slice(0, 3).map((post, idx) => (
@@ -152,30 +136,18 @@ export default function BlogSection() {
   }
 
   return (
-    <section id="blog" className="py-24 relative overflow-hidden bg-[#0B0F19]/25">
+    <section id="blog" className="section-y relative overflow-hidden bg-[#0B0F19]/25">
       {/* Background decoration */}
       <div className="absolute top-[20%] right-[-10%] h-[35vw] w-[35vw] rounded-full bg-neon-indigo/5 blur-[120px] pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center space-y-4 mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-3xl sm:text-4xl font-extrabold"
-          >
-            Latest <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent glow-text-cyan">Articles</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-slate-400 max-w-2xl mx-auto"
-          >
-            Deep-dives, tutorials, and insights on mobile architecture and web architectures.
-          </motion.p>
-        </div>
+        <SectionHeading
+          kicker="06 — Writing"
+          title="Notes from the"
+          accent="build log"
+          subtitle="Deep-dives, tutorials, and insights on mobile architecture and web architectures."
+          className="mb-16"
+        />
 
         {/* Carousel Container */}
         <div className="relative min-h-[460px] flex items-center justify-center">

@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { BookOpen, Check, Award, ChevronRight, FileText, Sparkles, ShoppingBag } from 'lucide-react';
+import SectionHeading from '@/components/motion/SectionHeading';
 
 export default function BooksSection() {
   const gumroadUrl = 'https://codexabooks.gumroad.com/l/idea-to-product';
@@ -29,43 +30,20 @@ export default function BooksSection() {
   ];
 
   return (
-    <section id="books" className="py-24 relative overflow-hidden bg-[#0B0F19]/20 border-t border-white/5">
+    <section id="books" className="section-y relative overflow-hidden bg-[#0B0F19]/20 border-t border-white/5">
       {/* Background glow effects */}
       <div className="absolute top-[30%] left-[-10%] h-[35vw] w-[35vw] rounded-full bg-neon-cyan/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[20%] right-[-10%] h-[35vw] w-[35vw] rounded-full bg-neon-purple/5 blur-[120px] pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header */}
-        <div className="text-center space-y-4 mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border border-neon-cyan/20 bg-neon-cyan/5 text-neon-cyan"
-          >
-            <BookOpen size={12} className="animate-pulse" />
-            <span>MY PUBLISHED PLAYBOOK</span>
-          </motion.div>
-          
-          <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl sm:text-4xl font-extrabold tracking-tight"
-          >
-            Featured <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent glow-text-cyan">Book</span>
-          </motion.h2>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base"
-          >
-            Turn any idea into a real digital product — using the same playbook modern software companies use every day.
-          </motion.p>
-        </div>
+        <SectionHeading
+          kicker="05 — Published playbook"
+          title="From idea to"
+          accent="shipped product"
+          subtitle="Turn any idea into a real digital product — using the same playbook modern software companies use every day."
+          className="mb-16"
+        />
 
         {/* Grid layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -110,7 +88,7 @@ export default function BooksSection() {
                 From Idea to Product
               </h3>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                Most digital products fail not because the team couldn't build them, but because there was never a clear process to begin with. Discovery skipped. Requirements unclear. No PRD. Designers and developers working in different directions.
+                Most digital products fail not because the team couldn&apos;t build them, but because there was never a clear process to begin with. Discovery skipped. Requirements unclear. No PRD. Designers and developers working in different directions.
               </p>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-semibold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
                 This book changes that.
@@ -123,7 +101,7 @@ export default function BooksSection() {
             {/* Highlights Grid */}
             <div className="space-y-4">
               <h4 className="text-sm font-semibold tracking-wider text-slate-400 uppercase">
-                What You'll Get Inside
+                What You&apos;ll Get Inside
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {highlights.map((item, idx) => (

@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Background from "@/components/Background";
+import BackgroundLayer from "@/components/three/BackgroundLayer";
 import CustomCursor from "@/components/CustomCursor";
+import ScrollProgress from "@/components/motion/ScrollProgress";
+import MotionProvider from "@/components/motion/MotionProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 const geistMono = Geist_Mono({
@@ -33,9 +36,17 @@ export default function RootLayout({
       className={`${poppins.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[#0B0F19] text-slate-200">
+        {/* Depth stack, back to front: painted base, WebGL scene, content,
+            then the two full-screen grade passes. */}
         <Background />
-        <CustomCursor />
-        <main className="flex-grow">{children}</main>
+        <BackgroundLayer />
+        <MotionProvider>
+          <ScrollProgress />
+          <CustomCursor />
+          <main className="flex-grow">{children}</main>
+        </MotionProvider>
+        <div aria-hidden className="vignette" />
+        <div aria-hidden className="film-grain" />
       </body>
     </html>
   );

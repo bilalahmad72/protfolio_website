@@ -132,7 +132,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 case 'quote':
                   return (
                     <blockquote key={idx} className="my-8 pl-6 border-l-4 border-neon-cyan py-3 bg-neon-cyan/5 rounded-r-xl italic text-slate-200">
-                      "{section.text}"
+                      &ldquo;{section.text}&rdquo;
                     </blockquote>
                   );
                 case 'list':

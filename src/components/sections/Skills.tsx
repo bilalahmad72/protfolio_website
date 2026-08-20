@@ -2,16 +2,19 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Smartphone, 
-  GitBranch, 
-  Cloud, 
-  Flame, 
-  Layout, 
+import {
+  Smartphone,
+  GitBranch,
+  Cloud,
+  Flame,
+  Layout,
   Database,
-  LucideIcon 
+  LucideIcon
 } from 'lucide-react';
 import { skills, marqueeSkills } from '@/data/skills';
+import SectionHeading from '@/components/motion/SectionHeading';
+import TiltCard from '@/components/motion/TiltCard';
+import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
 
 const iconMap: Record<string, LucideIcon> = {
   phone: Smartphone,
@@ -23,103 +26,70 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export default function Skills() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring' as const, stiffness: 80, damping: 15 }
-    }
-  };
-
   return (
-    <section id="skills" className="py-24 relative overflow-hidden">
-      {/* Background Gradients */}
-      <div className="absolute top-[20%] left-[-10%] h-[30vw] w-[30vw] rounded-full bg-neon-indigo/5 blur-[120px] pointer-events-none" />
+    <section id="skills" className="section-y relative overflow-hidden">
+      <div className="pointer-events-none absolute top-[20%] left-[-10%] h-[30vw] w-[30vw] rounded-full bg-neon-indigo/5 blur-[120px]" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center space-y-4 mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-3xl sm:text-4xl font-extrabold"
-          >
-            My <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent glow-text-cyan">Skills</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-slate-400 max-w-2xl mx-auto"
-          >
-            The stack I use to ship production-grade, high-performance cross-platform applications.
-          </motion.p>
-        </div>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          kicker="01 — Capabilities"
+          title="The stack behind"
+          accent="every ship"
+          subtitle="The tools I use to deliver production-grade, high-performance cross-platform applications — chosen for the problem, not for the hype cycle."
+          className="mb-16"
+        />
 
-        {/* Marquee Skills Ticker */}
-        <div className="w-full overflow-hidden py-6 mb-16 border-y border-white/5 bg-[#0B0F19]/45 backdrop-blur-sm relative">
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0B0F19] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0B0F19] to-transparent z-10 pointer-events-none" />
-          
-          <div className="animate-marquee gap-8 items-center py-2 flex">
-            {/* First sequence */}
+        {/* Continuous ticker of the wider toolchain. */}
+        <div className="relative mb-16 w-full overflow-hidden border-y border-white/5 bg-[#0B0F19]/45 py-6 backdrop-blur-sm">
+          <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-24 bg-gradient-to-r from-[#0B0F19] to-transparent" />
+          <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-24 bg-gradient-to-l from-[#0B0F19] to-transparent" />
+
+          <div className="animate-marquee flex items-center gap-8 py-2">
             {marqueeSkills.concat(marqueeSkills).map((skill, index) => (
-              <div 
-                key={`${skill}-${index}`} 
-                className="flex items-center gap-2 px-6 py-2 rounded-full border border-white/5 bg-white/5 text-sm font-semibold text-slate-300 shadow-[0_4px_12px_rgba(0,0,0,0.1)] whitespace-nowrap"
+              <div
+                key={`${skill}-${index}`}
+                className="flex items-center gap-2 whitespace-nowrap rounded-full border border-white/5 bg-white/5 px-6 py-2 text-sm font-semibold text-slate-300 shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
               >
-                <div className="w-2 h-2 rounded-full bg-neon-cyan shadow-[0_0_8px_#00F2FE]" />
+                <div className="h-2 w-2 rounded-full bg-neon-cyan shadow-[0_0_8px_#00F2FE]" />
                 {skill}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Skills Cards Grid */}
-        <motion.div 
-          variants={containerVariants}
+        <motion.div
+          variants={staggerParent(0.1)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          viewport={viewportOnce}
+          className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"
+          style={{ perspective: 1600 }}
         >
-          {skills.map((skill) => {
+          {skills.map((skill, index) => {
             const Icon = iconMap[skill.iconName] || Smartphone;
             return (
-              <motion.div
-                key={skill.id}
-                variants={cardVariants}
-                whileHover={{ 
-                  y: -8, 
-                  borderColor: 'rgba(0, 242, 254, 0.4)',
-                  boxShadow: '0 10px 30px -15px rgba(0, 242, 254, 0.2)'
-                }}
-                className="glassmorphism p-8 rounded-2xl border border-white/5 transition-all duration-300 relative group overflow-hidden"
-              >
-                {/* Glow Border Accent */}
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neon-cyan via-neon-indigo to-neon-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Card Icon wrapper */}
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-neon-cyan/5 border border-neon-cyan/15 group-hover:bg-neon-cyan/10 group-hover:border-neon-cyan/30 text-neon-cyan group-hover:scale-110 transition-all duration-300 mb-6 shadow-[0_0_15px_rgba(0,242,254,0.05)]">
-                  <Icon size={24} />
-                </div>
+              <motion.div key={skill.id} variants={tiltIn} className="h-full">
+                <TiltCard max={8} lift={18} className="h-full rounded-2xl">
+                  <div className="glassmorphism group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 p-8 transition-colors duration-300 hover:border-neon-cyan/30">
+                    <div className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-neon-cyan via-neon-indigo to-neon-purple opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                <h3 className="text-xl font-bold text-slate-100 mb-3 group-hover:text-neon-cyan transition-colors">
-                  {skill.title}
-                </h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  {skill.description}
-                </p>
+                    {/* Editorial index in the corner. */}
+                    <span className="absolute top-6 right-7 font-mono text-xs text-slate-600 transition-colors duration-300 group-hover:text-neon-cyan/50">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-neon-cyan/15 bg-neon-cyan/5 text-neon-cyan shadow-[0_0_15px_rgba(0,242,254,0.05)] transition-all duration-300 group-hover:scale-110 group-hover:border-neon-cyan/30 group-hover:bg-neon-cyan/10">
+                      <Icon size={24} />
+                    </div>
+
+                    <h3 className="mb-3 text-xl font-bold tracking-tight text-slate-100 transition-colors group-hover:text-neon-cyan">
+                      {skill.title}
+                    </h3>
+                    <p className="text-pretty text-sm leading-relaxed text-slate-400">
+                      {skill.description}
+                    </p>
+                  </div>
+                </TiltCard>
               </motion.div>
             );
           })}
