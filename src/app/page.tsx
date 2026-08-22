@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import JsonLd from '@/components/seo/JsonLd';
+import { personSchema, websiteSchema } from '@/lib/schema';
 import Navbar from '@/components/sections/Navbar';
 import Hero from '@/components/sections/Hero';
 import Skills from '@/components/sections/Skills';
@@ -25,6 +27,8 @@ function SectionRule() {
 export default function Home() {
   return (
     <>
+      <JsonLd data={personSchema()} />
+      <JsonLd data={websiteSchema()} />
       <Navbar />
       <Hero />
       <Achievements />

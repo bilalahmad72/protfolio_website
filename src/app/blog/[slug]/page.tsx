@@ -1,8 +1,12 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Calendar, Smartphone, Layers, Laptop, Copy } from 'lucide-react';
 import { blogs } from '@/data/blogs';
+import { SITE, absoluteUrl } from '@/lib/site';
+import JsonLd from '@/components/seo/JsonLd';
+import { blogPostingSchema, breadcrumbSchema } from '@/lib/schema';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
 
@@ -15,6 +19,44 @@ const gradientThemes: Record<string, string> = {
   state: 'from-accent-fill-strong via-accent-fill to-[#10267A]',
   frontend: 'from-accent-fill via-accent-fill-strong to-[#10267A]',
 };
+
+/**
+ * Per-article metadata. Without this every post inherits the root layout's
+ * title and description, which presents three different URLs to Google as the
+ * same page.
+ */
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = blogs.find((b) => b.id === slug);
+
+  if (!post) {
+    return { title: 'Article not found' };
+  }
+
+  const url = absoluteUrl(`/blog/${post.id}`);
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `/blog/${post.id}/` },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.excerpt,
+      url,
+      publishedTime: new Date(post.date).toISOString(),
+      authors: [SITE.name],
+      tags: [post.category],
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: SITE.ogImageAlt }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [SITE.ogImage],
+    },
+  };
+}
 
 // Next.js static generation params helper
 export async function generateStaticParams() {
@@ -33,6 +75,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   return (
     <>
+      <JsonLd data={blogPostingSchema(post)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Blog', path: '/blog' },
+          { name: post.title, path: `/blog/${post.id}` },
+        ])}
+      />
       <Navbar />
       <article className="min-h-screen pt-28 pb-20 relative">
         {/* Glow effect */}
