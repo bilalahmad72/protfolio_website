@@ -136,7 +136,7 @@ export default function Hero() {
             <div className="space-y-2">
               <TextReveal
                 as="h1"
-                text="Hi, I am Bilal Ahmad"
+                text="Hi, I am Bilal Ahmad — Senior Flutter Developer"
                 delay={0.3}
                 className="text-4xl font-extrabold leading-[1.08] tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-[4.25rem]"
                 highlight={['Bilal', 'Ahmad']}
