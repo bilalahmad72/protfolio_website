@@ -19,6 +19,29 @@ const gradientThemes: Record<string, string> = {
   frontend: 'from-accent-fill via-accent-fill-strong to-[#10267A]',
 };
 
+/*
+ * Search Console reported `Referring page: None detected` for /blog/ — the home
+ * page linked to individual posts but never to the index, so it was reachable
+ * only through the sitemap. This has to render in the pre-hydration branch too,
+ * or the crawler's first pass will not see it.
+ */
+function AllArticlesLink() {
+  return (
+    <div className="mt-12 flex justify-center">
+      <Link
+        href="/blog"
+        className="group inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-accent/40 hover:text-accent"
+      >
+        View all articles
+        <ArrowRight
+          size={16}
+          className="transition-transform duration-300 group-hover:translate-x-1"
+        />
+      </Link>
+    </div>
+  );
+}
+
 export default function BlogSection() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -130,6 +153,8 @@ export default function BlogSection() {
               </div>
             ))}
           </div>
+
+          <AllArticlesLink />
         </div>
       </section>
     );
@@ -261,6 +286,8 @@ export default function BlogSection() {
             ))}
           </div>
         )}
+
+        <AllArticlesLink />
       </div>
     </section>
   );

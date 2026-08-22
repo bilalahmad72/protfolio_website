@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef } from 'react';
-import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, MouseIcon } from 'lucide-react';
 import HeroSceneLayer from '@/components/three/HeroSceneLayer';
@@ -68,14 +67,25 @@ export default function Hero() {
 
               <div className="absolute inset-0 overflow-hidden rounded-full border border-slate-200 bg-surface/85 p-2 shadow-[0_30px_80px_-30px_rgba(44,92,255,0.20)] backdrop-blur-sm">
                 <div className="relative h-full w-full overflow-hidden rounded-full">
-                  <Image
-                    src="/images/profile.jpg"
-                    alt="Bilal Ahmad"
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 256px, 352px"
-                    className="scale-105 object-cover saturate-[0.88] contrast-[1.04] transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110"
-                  />
+                  {/*
+                    This is the LCP element, and `output: 'export'` forces
+                    images.unoptimized — next/image would ship the source file
+                    at whatever size it happens to be. A plain <picture> lets the
+                    browser take the 29 KB WebP and fall back to JPEG, instead of
+                    the 690 KB original this replaced.
+                  */}
+                  <picture>
+                    <source srcSet="/images/profile.webp" type="image/webp" />
+                    <img
+                      src="/images/profile.jpg"
+                      alt="Bilal Ahmad, Senior Flutter Developer"
+                      width={800}
+                      height={800}
+                      fetchPriority="high"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full scale-105 object-cover saturate-[0.88] contrast-[1.04] transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110"
+                    />
+                  </picture>
                   {/* Cool grade over the portrait so it belongs to the scene. */}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-accent-deep/25 via-transparent to-accent/10" />
                   <div className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_50px_16px_rgba(255,255,255,0.35)]" />
