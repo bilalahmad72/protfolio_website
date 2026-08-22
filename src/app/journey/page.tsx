@@ -7,16 +7,42 @@ import { experiences } from '@/data/experience';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
 import HashScroll from '@/components/motion/HashScroll';
+import JsonLd from '@/components/seo/JsonLd';
+import { breadcrumbSchema } from '@/lib/schema';
+import { SITE, absoluteUrl } from '@/lib/site';
+
+const TITLE = 'My Journey as a Flutter Developer';
+const DESCRIPTION =
+  'How I went from freelance bug fixes to shipping production fintech apps: every role, what I built, and the full tech breakdown across eight teams.';
 
 export const metadata: Metadata = {
-  title: 'My Journey as a Flutter Developer — Bilal Ahmad',
-  description:
-    'How I went from freelance bug fixes to shipping production fintech apps: every role, what I built, and the full tech breakdown across eight teams.',
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: '/journey/' },
+  openGraph: {
+    type: 'profile',
+    title: `${TITLE} — ${SITE.name}`,
+    description: DESCRIPTION,
+    url: absoluteUrl('/journey'),
+    images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: SITE.ogImageAlt }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${TITLE} — ${SITE.name}`,
+    description: DESCRIPTION,
+    images: [SITE.ogImage],
+  },
 };
 
 export default function JourneyPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Journey', path: '/journey' },
+        ])}
+      />
       <Navbar />
       <HashScroll />
 

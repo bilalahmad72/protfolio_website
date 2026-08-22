@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE, absoluteUrl } from "@/lib/site";
 import Background from "@/components/Background";
 import BackgroundLayer from "@/components/three/BackgroundLayer";
 import CustomCursor from "@/components/CustomCursor";
@@ -19,10 +20,39 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bilal Ahmad - Senior Flutter Developer",
-  description: "Senior Flutter Developer with 4+ years building production mobile apps — Clean Architecture, REST & GraphQL API integration, and custom Flutter animations. Comfortable across Riverpod, BLoC and Provider, and vibe coding with Claude Code, Codex, Antigravity and Cursor.",
-  keywords: "Senior Flutter Developer, Flutter, Dart, Clean Architecture, Riverpod, BLoC, Cubit, GetX, Provider, REST API, GraphQL, PostgreSQL, Firebase, Supabase, MongoDB, vibe coding, Claude Code, Codex, Antigravity, Cursor",
-  authors: [{ name: "Bilal Ahmad" }],
+  // Without metadataBase, relative OG image paths cannot be resolved to the
+  // absolute URLs that crawlers and share scrapers require.
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: `${SITE.name} — ${SITE.jobTitle}`,
+    template: `%s — ${SITE.name}`,
+  },
+  description: SITE.description,
+  authors: [{ name: SITE.name, url: SITE.url }],
+  creator: SITE.name,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: `${SITE.name} — ${SITE.jobTitle}`,
+    title: `${SITE.name} — ${SITE.jobTitle}`,
+    description: SITE.description,
+    url: absoluteUrl('/'),
+    locale: SITE.locale,
+    images: [
+      { url: SITE.ogImage, width: 1200, height: 630, alt: SITE.ogImageAlt },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${SITE.name} — ${SITE.jobTitle}`,
+    description: SITE.description,
+    images: [SITE.ogImage],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
 };
 
 export default function RootLayout({

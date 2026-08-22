@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { motion, type Variants } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useInView, type Variants } from 'framer-motion';
 import { EASE_CINEMATIC, viewportOnce } from '@/lib/motion';
 
 type Direction = 'up' | 'down' | 'left' | 'right' | 'none';
@@ -40,6 +40,16 @@ function offsetFor(direction: Direction, distance: number) {
 /**
  * The single scroll-entrance primitive used across the page, so every section
  * reveals on the same curve, distance and trigger point.
+ *
+ * The hidden state is `opacity: 0`, and it is server-rendered — which means an
+ * IntersectionObserver that never fires leaves the content permanently
+ * invisible rather than merely un-animated. That is not hypothetical: scroll
+ * restoration on reload, a mobile address bar resizing the viewport after load,
+ * and background/occluded tabs have all been observed to skip the callback.
+ *
+ * So the observer is treated as the fast path, not the only path. A geometry
+ * check runs after mount and on scroll/resize, and reveals anything that is
+ * actually on screen. Both paths latch once and then detach.
  */
 export default function Reveal({
   children,
@@ -52,6 +62,50 @@ export default function Reveal({
   tilt = false,
   amount = viewportOnce.amount,
 }: RevealProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(ref, { once: true, amount });
+  const [fallbackVisible, setFallbackVisible] = useState(false);
+
+  useEffect(() => {
+    if (fallbackVisible) return;
+
+    const isOnScreen = () => {
+      const el = ref.current;
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      return rect.top < viewportHeight && rect.bottom > 0;
+    };
+
+    const check = () => {
+      if (!isOnScreen()) return;
+      setFallbackVisible(true);
+    };
+
+    // One deferred check catches the case the observer misses most often: the
+    // element already being on screen when it mounts, after the browser has
+    // restored a scroll position.
+    const timer = window.setTimeout(check, 600);
+
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    // A mobile address bar collapsing, an orientation change, or returning to a
+    // backgrounded tab all resize the viewport after load — each one is a point
+    // where an observer can miss an element that is now on screen.
+    window.addEventListener('orientationchange', check);
+    window.addEventListener('pageshow', check);
+    document.addEventListener('visibilitychange', check);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+      window.removeEventListener('orientationchange', check);
+      window.removeEventListener('pageshow', check);
+      document.removeEventListener('visibilitychange', check);
+    };
+  }, [fallbackVisible]);
+
   const variants: Variants = {
     hidden: {
       opacity: 0,
@@ -71,11 +125,11 @@ export default function Reveal({
 
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={variants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount }}
+      animate={inView || fallbackVisible ? 'visible' : 'hidden'}
       style={tilt ? { transformPerspective: 1200 } : undefined}
     >
       {children}
