@@ -84,7 +84,7 @@ export default function Navbar() {
       transition={{ duration: 0.9, ease: EASE_CINEMATIC, delay: 0.2 }}
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
         isScrolled
-          ? 'border-b border-slate-200 bg-surface/85 py-3 shadow-[0_8px_28px_-18px_rgba(16,38,122,0.28)] backdrop-blur-xl'
+          ? 'border-b border-slate-200 bg-surface/85 py-3 shadow-[0_8px_28px_-18px_rgba(16,38,122,0.28)]'
           : 'bg-transparent py-6'
       }`}
     >
@@ -104,7 +104,7 @@ export default function Navbar() {
           </a>
 
           {/* Desktop nav, grouped into a single glass pill. */}
-          <div className="hidden items-center rounded-full border border-slate-200 bg-slate-50 p-1 backdrop-blur-md md:flex">
+          <div className="hidden items-center rounded-full border border-slate-200 bg-slate-50 p-1 md:flex">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -150,7 +150,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: EASE_CINEMATIC }}
-            className="overflow-hidden border-b border-slate-200 bg-surface/95 backdrop-blur-lg md:hidden"
+            className="overflow-hidden border-b border-slate-200 bg-surface/95 md:hidden"
           >
             <div className="space-y-1 px-4 pt-2 pb-6">
               {navLinks.map((link, index) => (

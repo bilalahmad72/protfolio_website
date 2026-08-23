@@ -35,7 +35,7 @@ export default function SectionHeading({
     <div
       className={`flex flex-col gap-5 ${isCentered ? 'items-center text-center' : 'items-start text-left'} ${className}`}
     >
-      <Reveal blur={6} distance={16} duration={0.7}>
+      <Reveal blur={0} distance={16} duration={0.7}>
         <span className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-accent/80">
           <span className="h-px w-8 bg-gradient-to-r from-transparent to-accent/70" />
           {kicker}
@@ -61,7 +61,7 @@ export default function SectionHeading({
       />
 
       {subtitle && (
-        <Reveal delay={0.12} blur={6} distance={18}>
+        <Reveal delay={0.12} blur={0} distance={18}>
           <p
             className={`text-pretty text-sm leading-relaxed text-slate-600 sm:text-base ${
               isCentered ? 'mx-auto max-w-2xl' : 'max-w-2xl'

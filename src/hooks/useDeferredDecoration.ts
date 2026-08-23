@@ -20,7 +20,14 @@ type NavigatorWithHints = Navigator & {
  * enhancement, and it only loads when the device has capacity to spare and the
  * page is otherwise finished.
  *
+ * Deferring alone was not enough. Loading the scenes on idle instead of on
+ * mount pushed the work past `load`, which extended Time to Interactive and
+ * measured *worse*: TBT went from 17,490 ms to 20,790 ms. On a phone this
+ * background is decoration nobody asked for, so it is now simply not loaded
+ * there at all.
+ *
  * Returns `false` — permanently — when:
+ * - the viewport is narrower than 1024px, or the pointer is not a mouse
  * - reduced motion is requested (the scenes are animation and nothing else)
  * - the device reports 4 GB of memory or less, or 4 cores or fewer
  * - Data Saver is on, or the connection reports 2g/3g
@@ -36,6 +43,7 @@ export function useDeferredDecoration(): boolean {
 
     const nav = navigator as NavigatorWithHints;
 
+    if (!window.matchMedia('(min-width: 1024px) and (hover: hover) and (pointer: fine)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (typeof nav.deviceMemory === 'number' && nav.deviceMemory <= 4) return;
     if (typeof nav.hardwareConcurrency === 'number' && nav.hardwareConcurrency <= 4) return;

@@ -63,9 +63,9 @@ export default function Hero() {
               <div className="absolute inset-[-26px] rounded-full border border-dashed border-accent/20 animate-[spin_50s_linear_infinite]" />
               <div className="absolute inset-[-14px] rounded-full border border-accent-deep/25 animate-[spin_32s_linear_infinite_reverse]" />
               <div className="absolute inset-[-14px] rounded-full border-t-2 border-accent/70 animate-[spin_9s_linear_infinite]" />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-accent via-accent-strong to-accent-deep opacity-25 blur-3xl" />
+              <div className="absolute inset-[-8%] rounded-full bg-[radial-gradient(circle,var(--color-accent-200)_0%,transparent_70%)] opacity-70" />
 
-              <div className="absolute inset-0 overflow-hidden rounded-full border border-slate-200 bg-surface/85 p-2 shadow-[0_30px_80px_-30px_rgba(44,92,255,0.20)] backdrop-blur-sm">
+              <div className="absolute inset-0 overflow-hidden rounded-full border border-slate-200 bg-surface/85 p-2 shadow-[0_30px_80px_-30px_rgba(44,92,255,0.20)]">
                 <div className="relative h-full w-full overflow-hidden rounded-full">
                   {/*
                     This is the LCP element, and `output: 'export'` forces
@@ -151,7 +151,7 @@ export default function Hero() {
               />
             </div>
 
-            <Reveal delay={0.95} blur={6} distance={20}>
+            <Reveal delay={0.95} blur={0} distance={20}>
               <p className="mx-auto max-w-2xl text-pretty text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
                 Senior Flutter Developer with{' '}
                 <span className="text-accent">4+ years</span> building production mobile apps. I
@@ -195,7 +195,7 @@ export default function Hero() {
                 <MagneticButton
                   onClick={() => handleScrollTo('#projects')}
                   strength={10}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-8 py-4 font-semibold text-slate-800 backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:bg-accent/5 hover:text-accent sm:w-auto"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-8 py-4 font-semibold text-slate-800 transition-all duration-300 hover:border-accent/50 hover:bg-accent/5 hover:text-accent sm:w-auto"
                 >
                   View Work
                 </MagneticButton>

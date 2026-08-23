@@ -17,12 +17,12 @@ type TextRevealProps = {
 };
 
 const wordVariants = {
-  hidden: { opacity: 0, y: '0.6em', rotateX: -70, filter: 'blur(8px)' },
+  // No blur: this runs per word on the h1, and `filter` cannot be composited.
+  hidden: { opacity: 0, y: '0.6em', rotateX: -70 },
   visible: {
     opacity: 1,
     y: '0em',
     rotateX: 0,
-    filter: 'blur(0px)',
     transition: { duration: 0.85, ease: EASE_CINEMATIC },
   },
 };

@@ -21,25 +21,30 @@ export const staggerParent = (stagger = 0.08, delay = 0): Variants => ({
   },
 });
 
-/** Standard child: rises, sharpens and fades in together. */
+/*
+ * Both variants animate opacity and transform only. They previously animated
+ * `filter: blur()` as well, which reads nicely but cannot be composited — every
+ * frame repaints the element. `tiltIn` alone is applied to every project,
+ * skill, achievement and role card on the page.
+ */
+
+/** Standard child: rises and fades in. */
 export const riseIn: Variants = {
-  hidden: { opacity: 0, y: 28, filter: 'blur(10px)' },
+  hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: transitions.entrance,
   },
 };
 
 /** Child that also swings in on the X axis for a shallow 3D entrance. */
 export const tiltIn: Variants = {
-  hidden: { opacity: 0, y: 36, rotateX: -12, filter: 'blur(12px)' },
+  hidden: { opacity: 0, y: 36, rotateX: -12 },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
-    filter: 'blur(0px)',
     transition: transitions.entrance,
   },
 };

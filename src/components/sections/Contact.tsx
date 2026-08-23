@@ -64,8 +64,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section-y relative overflow-hidden">
-      {/* Background Gradients */}
-      <div className="absolute top-[20%] right-[-15%] h-[40vw] w-[40vw] rounded-full bg-accent-deep/5 blur-[120px] pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeading

@@ -52,7 +52,6 @@ const genericIconMap: Record<string, LucideIcon> = {
 export default function Skills() {
   return (
     <section id="skills" className="section-y relative overflow-hidden">
-      <div className="pointer-events-none absolute top-[20%] left-[-10%] h-[30vw] w-[30vw] rounded-full bg-accent-strong/5 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading

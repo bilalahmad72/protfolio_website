@@ -100,7 +100,7 @@ export default function TiltCard({
       {spotlight && (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[inherit] mix-blend-screen"
+          className="pointer-events-none absolute inset-0 rounded-[inherit]"
           style={{ background: spotlightBackground, opacity: spotlightOpacity }}
         />
       )}
@@ -108,7 +108,7 @@ export default function TiltCard({
       {glare && (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[inherit] mix-blend-overlay"
+          className="pointer-events-none absolute inset-0 rounded-[inherit]"
           style={{ background: glareBackground, opacity: glareOpacity }}
         />
       )}

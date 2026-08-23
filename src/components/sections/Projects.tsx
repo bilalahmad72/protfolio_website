@@ -13,7 +13,6 @@ import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
 export default function Projects() {
   return (
     <section id="projects" className="section-y relative overflow-hidden bg-slate-50">
-      <div className="pointer-events-none absolute right-[-10%] bottom-[10%] h-[40vw] w-[40vw] rounded-full bg-accent-deep/5 blur-[150px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading

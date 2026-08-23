@@ -14,7 +14,11 @@ type RevealProps = {
   duration?: number;
   distance?: number;
   direction?: Direction;
-  /** Blur radius the element sharpens from. Set to 0 for text-heavy blocks. */
+  /**
+   * Blur radius the element sharpens from. Defaults to 0 and should stay there:
+   * `filter: blur()` cannot be composited, so animating it repaints the element
+   * every frame. Opacity and transform both run on the GPU.
+   */
   blur?: number;
   /** Adds a shallow X-axis rotation for a 3D entrance. */
   tilt?: boolean;
@@ -58,7 +62,7 @@ export default function Reveal({
   duration = 0.9,
   distance = 28,
   direction = 'up',
-  blur = 10,
+  blur = 0,
   tilt = false,
   amount = viewportOnce.amount,
 }: RevealProps) {
@@ -106,11 +110,14 @@ export default function Reveal({
     };
   }, [fallbackVisible]);
 
+  // `filter: blur(0px)` is not the same as no filter: it still promotes the
+  // element and keeps it off the fast path. When there is no blur to animate,
+  // the property is left off entirely rather than set to zero.
   const variants: Variants = {
     hidden: {
       opacity: 0,
-      filter: blur > 0 ? `blur(${blur}px)` : 'blur(0px)',
       rotateX: tilt ? -10 : 0,
+      ...(blur > 0 ? { filter: `blur(${blur}px)` } : {}),
       ...offsetFor(direction, distance),
     },
     visible: {
@@ -118,7 +125,7 @@ export default function Reveal({
       x: 0,
       y: 0,
       rotateX: 0,
-      filter: 'blur(0px)',
+      ...(blur > 0 ? { filter: 'blur(0px)' } : {}),
       transition: { duration, delay, ease: EASE_CINEMATIC },
     },
   };
