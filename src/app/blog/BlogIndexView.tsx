@@ -92,9 +92,9 @@ export default function BlogIndexView() {
                     {post.iconType === 'laptop-code' && <Laptop size={48} />}
                   </div>
 
-                  <h3 className="text-lg font-bold text-white leading-snug drop-shadow-md z-10 px-4">
+                  <h2 className="text-lg font-bold text-white leading-snug drop-shadow-md z-10 px-4">
                     {post.title}
-                  </h3>
+                  </h2>
                   
                   <div className="absolute inset-0 bg-transparent opacity-[0.08]"
                     style={{
@@ -111,9 +111,9 @@ export default function BlogIndexView() {
                     <time dateTime={new Date(post.date).toISOString()}>{post.date}</time>
                   </div>
                   
-                  <h4 className="text-xl font-bold text-slate-900 group-hover:text-accent transition-colors line-clamp-2">
+                  <h2 className="text-xl font-bold text-slate-900 group-hover:text-accent transition-colors line-clamp-2">
                     <Link href={`/blog/${post.id}`}>{post.title}</Link>
-                  </h4>
+                  </h2>
                   
                   <p className="text-slate-600 text-sm leading-relaxed flex-grow line-clamp-3">
                     {post.excerpt}

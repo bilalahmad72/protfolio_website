@@ -101,7 +101,7 @@ export default function Testimonials() {
                   </p>
 
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900">{current.name}</h4>
+                    <h3 className="text-lg font-bold text-slate-900">{current.name}</h3>
                     <p className="mt-0.5 text-xs font-medium text-accent sm:text-sm">{current.role}</p>
                   </div>
                 </div>
