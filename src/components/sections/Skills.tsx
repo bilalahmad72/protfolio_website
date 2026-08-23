@@ -24,8 +24,9 @@ import { skills } from '@/data/skills';
 import { techStack } from '@/data/techStack';
 import { BrandIcon } from '@/components/icons/TechIcons';
 import SectionHeading from '@/components/motion/SectionHeading';
+import RevealGroup from '@/components/motion/RevealGroup';
 import TiltCard from '@/components/motion/TiltCard';
-import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
+import { staggerParent, tiltIn } from '@/lib/motion';
 
 const iconMap: Record<string, LucideIcon> = {
   phone: Smartphone,
@@ -63,12 +64,9 @@ export default function Skills() {
         />
 
         {/* The stack, grouped the way it gets used on a project. */}
-        <motion.div
+        <RevealGroup
           variants={staggerParent(0.08)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="mb-16 space-y-8"
+          className={"mb-16 space-y-8"}
         >
           {techStack.map((category) => (
             <motion.div key={category.id} variants={tiltIn}>
@@ -98,14 +96,11 @@ export default function Skills() {
               </ul>
             </motion.div>
           ))}
-        </motion.div>
+        </RevealGroup>
 
-        <motion.div
+        <RevealGroup
           variants={staggerParent(0.1)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"
+          className={"grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"}
         >
           {skills.map((skill, index) => {
             const Icon = iconMap[skill.iconName] || Smartphone;
@@ -135,7 +130,7 @@ export default function Skills() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </RevealGroup>
       </div>
     </section>
   );

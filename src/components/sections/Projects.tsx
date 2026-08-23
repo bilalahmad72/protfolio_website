@@ -1,14 +1,16 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Play, Apple, Globe } from 'lucide-react';
+import { ArrowRight, Play, Apple, Globe } from 'lucide-react';
 import { GithubIcon } from '@/components/icons/SocialIcons';
 import { projects } from '@/data/projects';
 import SectionHeading from '@/components/motion/SectionHeading';
+import RevealGroup from '@/components/motion/RevealGroup';
 import TiltCard from '@/components/motion/TiltCard';
-import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
+import { staggerParent, tiltIn } from '@/lib/motion';
 
 export default function Projects() {
   return (
@@ -23,12 +25,9 @@ export default function Projects() {
           className="mb-16"
         />
 
-        <motion.div
+        <RevealGroup
           variants={staggerParent(0.12)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"
+          className={"grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"}
         >
           {projects.map((project) => (
             <motion.div key={project.id} variants={tiltIn} className="h-full">
@@ -60,6 +59,19 @@ export default function Projects() {
                     <p className="flex-grow text-pretty text-sm leading-relaxed text-slate-600">
                       {project.description}
                     </p>
+
+                    {project.roleId && (
+                      <Link
+                        href={`/journey#role-${project.roleId}`}
+                        className="group/role inline-flex items-center gap-1.5 self-start text-xs font-semibold text-slate-500 transition-colors hover:text-accent"
+                      >
+                        Read how this was built
+                        <ArrowRight
+                          size={12}
+                          className="transition-transform duration-300 group-hover/role:translate-x-0.5"
+                        />
+                      </Link>
+                    )}
 
                     <div className="flex flex-wrap gap-1.5 pt-2">
                       {project.tags.map((tag) => (
@@ -128,7 +140,7 @@ export default function Projects() {
               </TiltCard>
             </motion.div>
           ))}
-        </motion.div>
+        </RevealGroup>
       </div>
     </section>
   );
