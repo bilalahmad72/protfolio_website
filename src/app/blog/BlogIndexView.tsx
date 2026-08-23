@@ -42,8 +42,6 @@ export default function BlogIndexView() {
     <>
       <Navbar />
       <div className="min-h-screen pt-28 pb-20 relative">
-        {/* Glow decoration */}
-        <div className="absolute top-[10%] left-[20%] h-[30vw] w-[30vw] rounded-full bg-accent-strong/5 blur-[120px] pointer-events-none" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
           

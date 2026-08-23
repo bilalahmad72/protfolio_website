@@ -112,7 +112,7 @@ export default function Testimonials() {
           <button
             onClick={prevTestimonial}
             aria-label="Previous testimonial"
-            className="absolute left-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-surface text-slate-600 shadow-md shadow-slate-900/10 backdrop-blur-md transition-all hover:scale-110 hover:border-accent/50 hover:text-accent active:scale-95 md:left-[-60px]"
+            className="absolute left-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-surface text-slate-600 shadow-md shadow-slate-900/10 transition-all hover:scale-110 hover:border-accent/50 hover:text-accent active:scale-95 md:left-[-60px]"
           >
             <ChevronLeft size={20} />
           </button>
@@ -120,7 +120,7 @@ export default function Testimonials() {
           <button
             onClick={nextTestimonial}
             aria-label="Next testimonial"
-            className="absolute right-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-surface text-slate-600 shadow-md shadow-slate-900/10 backdrop-blur-md transition-all hover:scale-110 hover:border-accent/50 hover:text-accent active:scale-95 md:right-[-60px]"
+            className="absolute right-[-20px] top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-surface text-slate-600 shadow-md shadow-slate-900/10 transition-all hover:scale-110 hover:border-accent/50 hover:text-accent active:scale-95 md:right-[-60px]"
           >
             <ChevronRight size={20} />
           </button>

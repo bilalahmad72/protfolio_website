@@ -85,7 +85,6 @@ export default function BlogSection() {
   if (!isMounted) {
     return (
       <section id="blog" className="section-y relative overflow-hidden bg-surface">
-        <div className="absolute top-[20%] right-[-10%] h-[35vw] w-[35vw] rounded-full bg-accent-strong/5 blur-[120px] pointer-events-none" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
           <SectionHeading
@@ -162,8 +161,6 @@ export default function BlogSection() {
 
   return (
     <section id="blog" className="section-y relative overflow-hidden bg-surface">
-      {/* Background decoration */}
-      <div className="absolute top-[20%] right-[-10%] h-[35vw] w-[35vw] rounded-full bg-accent-strong/5 blur-[120px] pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeading
@@ -179,7 +176,7 @@ export default function BlogSection() {
           {showIndicators && (
             <button
               onClick={prev}
-              className="absolute left-[-20px] md:left-[-60px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-slate-200 hover:border-accent/50 bg-surface backdrop-blur-md text-slate-600 hover:text-accent flex items-center justify-center transition-all shadow-md shadow-slate-900/10 hover:scale-110 active:scale-95 cursor-pointer z-20"
+              className="absolute left-[-20px] md:left-[-60px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-slate-200 hover:border-accent/50 bg-surface text-slate-600 hover:text-accent flex items-center justify-center transition-all shadow-md shadow-slate-900/10 hover:scale-110 active:scale-95 cursor-pointer z-20"
             >
               <ChevronLeft size={20} />
             </button>
@@ -263,7 +260,7 @@ export default function BlogSection() {
           {showIndicators && (
             <button
               onClick={next}
-              className="absolute right-[-20px] md:right-[-60px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-slate-200 hover:border-accent/50 bg-surface backdrop-blur-md text-slate-600 hover:text-accent flex items-center justify-center transition-all shadow-md shadow-slate-900/10 hover:scale-110 active:scale-95 cursor-pointer z-20"
+              className="absolute right-[-20px] md:right-[-60px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-slate-200 hover:border-accent/50 bg-surface text-slate-600 hover:text-accent flex items-center justify-center transition-all shadow-md shadow-slate-900/10 hover:scale-110 active:scale-95 cursor-pointer z-20"
             >
               <ChevronRight size={20} />
             </button>

@@ -35,7 +35,6 @@ export default function Experience() {
 
   return (
     <section id="experience" className="section-y relative overflow-hidden">
-      <div className="pointer-events-none absolute top-[30%] left-[-15%] h-[40vw] w-[40vw] rounded-full bg-accent/5 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -58,8 +57,8 @@ export default function Experience() {
           {experiences.slice(0, ROLES_ON_HOME).map((exp, index) => (
             <motion.div
               key={exp.id}
-              initial={{ opacity: 0, x: -36, filter: 'blur(10px)' }}
-              whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, x: -36 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.9, ease: EASE_CINEMATIC, delay: index * 0.08 }}
               className="relative"

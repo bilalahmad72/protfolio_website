@@ -28,7 +28,6 @@ const iconMap: Record<string, LucideIcon> = {
 export default function Achievements() {
   return (
     <section className="relative overflow-hidden border-y border-slate-200 bg-slate-50 py-20">
-      <div className="pointer-events-none absolute top-[-50%] left-[20%] h-[30vw] w-[30vw] rounded-full bg-accent/5 blur-[100px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div

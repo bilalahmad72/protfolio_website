@@ -1,12 +1,15 @@
-'use client';
-
 import React from 'react';
 
 /**
- * The static base layer beneath the WebGL canvas: the themed ground, a blueprint
- * grid and two soft blue washes. It renders on the server, so the page never
- * flashes an unstyled background while the 3D scene is still being fetched.
- * Every colour here is a token, so it follows the light/dark switch.
+ * The static base layer beneath the WebGL canvas.
+ *
+ * This used to be three 55–60vw circles with `blur-[150px]` running a continuous
+ * float animation. A blurred element cannot be composited, so each frame
+ * repainted the whole area — a large part of the 31.8 s of main-thread work
+ * Lighthouse measured against only 1.9 s of script.
+ *
+ * Radial gradients produce the same soft wash with no filter and no animation,
+ * and they paint once.
  */
 export default function Background() {
   return (
@@ -23,10 +26,17 @@ export default function Background() {
         }}
       />
 
-      {/* Slow-drifting colour fields — blue 100/200 doing the tinting. */}
-      <div className="absolute top-[-18%] left-[-12%] h-[55vw] w-[55vw] rounded-full bg-accent-100 blur-[150px] animate-float-slow" />
-      <div className="absolute right-[-12%] bottom-[-18%] h-[60vw] w-[60vw] rounded-full bg-accent-200/70 blur-[170px] animate-float-slower" />
-      <div className="absolute top-[38%] right-[20%] h-[30vw] w-[30vw] rounded-full bg-accent-100 blur-[130px] animate-float-slow" />
+      {/* Colour wash — gradients rather than blurred shapes. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            radial-gradient(60vw 60vw at 8% 0%, var(--color-accent-100) 0%, transparent 60%),
+            radial-gradient(65vw 65vw at 95% 100%, var(--color-accent-200) 0%, transparent 60%),
+            radial-gradient(35vw 35vw at 78% 42%, var(--color-accent-100) 0%, transparent 65%)
+          `,
+        }}
+      />
 
       {/* Keeps the page from dissolving into flat white at the very edges. */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,var(--edge-tint)_100%)]" />
