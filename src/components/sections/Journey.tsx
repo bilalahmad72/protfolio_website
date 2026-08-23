@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { journeyChapters, journeyIntro } from '@/data/journey';
 import SectionHeading from '@/components/motion/SectionHeading';
+import RevealGroup from '@/components/motion/RevealGroup';
 import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
 
 /**
@@ -36,12 +37,10 @@ export default function Journey() {
             {journeyIntro}
           </motion.p>
 
-          <motion.ol
+          <RevealGroup
             variants={staggerParent(0.09)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="relative space-y-7 border-l border-slate-200 pl-7"
+            as="ol"
+            className={"relative space-y-7 border-l border-slate-200 pl-7"}
           >
             {journeyChapters.map((chapter) => (
               <motion.li key={chapter.id} variants={tiltIn} className="relative">
@@ -60,7 +59,7 @@ export default function Journey() {
                 </p>
               </motion.li>
             ))}
-          </motion.ol>
+          </RevealGroup>
         </div>
 
         <motion.div

@@ -14,7 +14,8 @@ import {
 import { achievements } from '@/data/achievements';
 import TiltCard from '@/components/motion/TiltCard';
 import CountUp from '@/components/motion/CountUp';
-import { staggerParent, tiltIn, viewportOnce } from '@/lib/motion';
+import RevealGroup from '@/components/motion/RevealGroup';
+import { staggerParent, tiltIn } from '@/lib/motion';
 
 const iconMap: Record<string, LucideIcon> = {
   'check-circle': CheckCircle,
@@ -30,12 +31,9 @@ export default function Achievements() {
     <section className="relative overflow-hidden border-y border-slate-200 bg-slate-50 py-20">
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
+        <RevealGroup
           variants={staggerParent(0.08)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-7"
+          className={"grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-7"}
         >
           {achievements.map((item) => {
             const Icon = iconMap[item.iconName] || CheckCircle;
@@ -62,7 +60,7 @@ export default function Achievements() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </RevealGroup>
       </div>
     </section>
   );
