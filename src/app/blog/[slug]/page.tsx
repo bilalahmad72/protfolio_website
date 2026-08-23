@@ -7,6 +7,7 @@ import { blogs } from '@/data/blogs';
 import { SITE, absoluteUrl } from '@/lib/site';
 import JsonLd from '@/components/seo/JsonLd';
 import { blogPostingSchema, breadcrumbSchema } from '@/lib/schema';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
 
@@ -99,6 +100,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             Back to Home
           </Link>
 
+          <Breadcrumbs
+            trail={[
+              { name: 'Home', path: '/' },
+              { name: 'Blog', path: '/blog' },
+              { name: post.title },
+            ]}
+          />
+
           {/* Post Header */}
           <div className="space-y-6 mb-12">
             <div className="flex items-center gap-4">
@@ -107,7 +116,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </span>
               <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
                 <Calendar size={12} />
-                <span>{post.date}</span>
+                <time dateTime={new Date(post.date).toISOString()}>{post.date}</time>
               </div>
             </div>
 

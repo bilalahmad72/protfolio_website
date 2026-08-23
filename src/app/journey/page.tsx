@@ -9,6 +9,7 @@ import Footer from '@/components/sections/Footer';
 import HashScroll from '@/components/motion/HashScroll';
 import JsonLd from '@/components/seo/JsonLd';
 import { breadcrumbSchema } from '@/lib/schema';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import { SITE, absoluteUrl } from '@/lib/site';
 
 const TITLE = 'My Journey as a Flutter Developer';
@@ -58,6 +59,13 @@ export default function JourneyPage() {
             />
             Back to portfolio
           </Link>
+
+          <Breadcrumbs
+            trail={[
+              { name: 'Home', path: '/' },
+              { name: 'Journey' },
+            ]}
+          />
 
           <header className="mb-14">
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">

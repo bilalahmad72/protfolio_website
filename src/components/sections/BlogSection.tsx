@@ -128,7 +128,7 @@ export default function BlogSection() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
                       <Calendar size={12} />
-                      <span>{post.date}</span>
+                      <time dateTime={new Date(post.date).toISOString()}>{post.date}</time>
                     </div>
                     
                     <h4 className="text-xl font-bold text-slate-900">
@@ -232,7 +232,7 @@ export default function BlogSection() {
                       <div className="space-y-4">
                         <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
                           <Calendar size={12} />
-                          <span>{post.date}</span>
+                          <time dateTime={new Date(post.date).toISOString()}>{post.date}</time>
                         </div>
                         
                         <h4 className="text-xl font-bold text-slate-900 group-hover:text-accent transition-colors line-clamp-2">
