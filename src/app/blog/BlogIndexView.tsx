@@ -122,6 +122,7 @@ export default function BlogIndexView() {
                   <div className="pt-2">
                     <Link 
                       href={`/blog/${post.id}`} 
+                      aria-label={`Read the article: ${post.title}`}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent-deep transition-colors group/link cursor-pointer"
                     >
                       Read More

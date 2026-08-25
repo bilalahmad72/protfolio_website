@@ -132,12 +132,20 @@ export default function Testimonials() {
               key={item.id}
               onClick={() => goTo(idx, idx > index ? 1 : -1)}
               aria-label={`Show testimonial ${idx + 1}`}
-              className={`h-2.5 cursor-pointer rounded-full transition-all duration-300 ${
-                index === idx
-                  ? 'w-7 bg-accent'
-                  : 'w-2.5 bg-slate-300 hover:bg-slate-400'
-              }`}
-            />
+              aria-current={index === idx}
+              // The dot stays 10 px; the button around it is 44 px so the
+              // touch target clears the 24 px minimum.
+              className="flex h-11 w-6 cursor-pointer items-center justify-center"
+            >
+              <span
+                aria-hidden
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  index === idx
+                    ? 'w-7 bg-accent'
+                    : 'w-2.5 bg-slate-300 hover:bg-slate-400'
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

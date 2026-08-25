@@ -112,6 +112,7 @@ export default function Experience() {
                 <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-slate-200 pt-5">
                   <Link
                     href={`/journey#role-${exp.id}`}
+                    aria-label={`Read more about the ${exp.role} role at ${exp.company}`}
                     className="group/more inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
                   >
                     Read more
