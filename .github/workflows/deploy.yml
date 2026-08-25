@@ -28,8 +28,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # `npm ci` treats the lockfile as authoritative; `npm install` may resolve
+      # different versions than were tested and rewrite the lockfile mid-build.
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Build with Next.js
         run: npm run build
