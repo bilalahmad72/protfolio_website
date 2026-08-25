@@ -177,6 +177,7 @@ export default function BlogSection() {
           {showIndicators && (
             <button
               onClick={prev}
+              aria-label="Previous article"
               className="absolute left-[-20px] md:left-[-60px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-slate-200 hover:border-accent/50 bg-surface text-slate-600 hover:text-accent flex items-center justify-center transition-all shadow-md shadow-slate-900/10 hover:scale-110 active:scale-95 cursor-pointer z-20"
             >
               <ChevronLeft size={20} />
@@ -262,6 +263,7 @@ export default function BlogSection() {
           {showIndicators && (
             <button
               onClick={next}
+              aria-label="Next article"
               className="absolute right-[-20px] md:right-[-60px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-slate-200 hover:border-accent/50 bg-surface text-slate-600 hover:text-accent flex items-center justify-center transition-all shadow-md shadow-slate-900/10 hover:scale-110 active:scale-95 cursor-pointer z-20"
             >
               <ChevronRight size={20} />
