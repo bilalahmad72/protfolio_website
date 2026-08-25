@@ -124,5 +124,25 @@ export const projects: Project[] = [
       'Figma to Flutter',
       'Responsive UI'
     ]
+  },
+  {
+    id: 'avunja',
+    roleId: 'simple-alliance',
+    title: 'Avunja',
+    description:
+      'A cross-platform app shipped to Android and iOS from one Flutter codebase. My scope was the complete UI: the Adobe XD design file converted screen by screen into pixel-perfect Flutter, laid out responsively with MediaQuery and adaptive sizing, structured on an MVC folder architecture, and wired with GetX for reactive state, dependency injection and named routing.',
+    image: '/images/avunja-app.webp',
+    androidUrl:
+      'https://play.google.com/store/apps/details?id=com.avunja.avunjaAgent',
+    iosUrl: 'https://apps.apple.com/us/app/avunja/id6471581772',
+    webUrl: 'https://www.avunja.com/',
+    tags: [
+      'Flutter',
+      'GetX',
+      'MVC',
+      'Adobe XD to Flutter',
+      'Responsive UI',
+      'MediaQuery'
+    ]
   }
 ];
