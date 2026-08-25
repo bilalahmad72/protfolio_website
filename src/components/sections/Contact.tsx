@@ -49,8 +49,8 @@ export default function Contact() {
 
       const whatsappUrl = `https://wa.me/923084539672?text=${encodeURIComponent(text)}`;
       
-      // Open link in a new tab
-      window.open(whatsappUrl, '_blank');
+      // 'noopener' keeps the new tab from getting a handle on this window.
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
       setStatus('success');
       setFormData({ name: '', phone: '', subject: '', message: '' });
