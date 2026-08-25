@@ -36,7 +36,7 @@ export default function SectionHeading({
       className={`flex flex-col gap-5 ${isCentered ? 'items-center text-center' : 'items-start text-left'} ${className}`}
     >
       <Reveal blur={0} distance={16} duration={0.7}>
-        <span className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-accent/80">
+        <span className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-accent">
           <span className="h-px w-8 bg-gradient-to-r from-transparent to-accent/70" />
           {kicker}
         </span>

@@ -111,7 +111,7 @@ export default function Skills() {
                     <div className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-accent via-accent-strong to-accent-deep opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                     {/* Editorial index in the corner. */}
-                    <span className="absolute top-6 right-7 font-mono text-xs text-slate-600 transition-colors duration-300 group-hover:text-accent/50">
+                    <span className="absolute top-6 right-7 font-mono text-xs text-slate-600 transition-colors duration-300 group-hover:text-accent">
                       {String(index + 1).padStart(2, '0')}
                     </span>
 

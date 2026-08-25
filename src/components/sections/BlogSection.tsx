@@ -130,9 +130,9 @@ export default function BlogSection() {
                       <time dateTime={new Date(post.date).toISOString()}>{post.date}</time>
                     </div>
                     
-                    <h4 className="text-xl font-bold text-slate-900">
+                    <h3 className="text-xl font-bold text-slate-900">
                       <Link href={`/blog/${post.id}`}>{post.title}</Link>
-                    </h4>
+                    </h3>
                     
                     <p className="text-slate-600 text-sm leading-relaxed line-clamp-4">
                       {post.excerpt}
@@ -232,9 +232,9 @@ export default function BlogSection() {
                           <time dateTime={new Date(post.date).toISOString()}>{post.date}</time>
                         </div>
                         
-                        <h4 className="text-xl font-bold text-slate-900 group-hover:text-accent transition-colors line-clamp-2">
+                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-accent transition-colors line-clamp-2">
                           <Link href={`/blog/${post.id}`}>{post.title}</Link>
-                        </h4>
+                        </h3>
                         
                         <p className="text-slate-600 text-sm leading-relaxed line-clamp-4">
                           {post.excerpt}
