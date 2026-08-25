@@ -144,5 +144,24 @@ export const projects: Project[] = [
       'Responsive UI',
       'MediaQuery'
     ]
+  },
+  {
+    id: 'gymscanner',
+    roleId: 'gymscanner',
+    title: 'Gymscanner',
+    description:
+      'A gym and fitness discovery app on Android and iOS, built from one Flutter codebase. I built the UI layer: a glassmorphism interface — layered blur, translucency and soft borders — assembled as reusable widgets, responsive across phone sizes with MediaQuery, structured on MVC with GetX for reactive state and named routing, and wired to Firebase Authentication and Cloud Firestore for real-time data, with small entry and transition animations throughout.',
+    image: '/images/gymscanner-app.webp',
+    androidUrl: 'https://play.google.com/store/apps/details?id=com.gymscanner',
+    iosUrl: 'https://apps.apple.com/gb/app/gymscanner-com/id1538267917',
+    tags: [
+      'Flutter',
+      'GetX',
+      'MVC',
+      'Glassmorphism',
+      'Firebase Auth',
+      'Cloud Firestore',
+      'Responsive UI'
+    ]
   }
 ];

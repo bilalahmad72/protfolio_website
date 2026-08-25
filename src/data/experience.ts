@@ -153,11 +153,30 @@ export const experiences: WorkExperience[] = [
     tags: ['Flutter', 'Figma to Flutter', 'Responsive UI', 'Firebase Auth', 'Cloud Firestore', 'Push Notifications', 'GetX', 'Provider']
   },
   {
+    id: 'gymscanner',
+    role: 'Flutter UI Developer',
+    company: 'Gymscanner Inc.',
+    type: 'Contract',
+    location: 'Delaware, US · Remote',
+    duration: 'September 2021 - November 2021',
+    startYear: 2021,
+    details: [
+      'Built the Flutter UI for the Gymscanner app across Android and iOS from a single codebase, taking the designs through to production-ready screens.',
+      'Implemented a glassmorphism interface — layered blur, translucency and soft borders — as reusable widgets rather than one-off decorations, so the treatment stayed consistent across every screen.',
+      'Made the whole UI responsive with MediaQuery and adaptive sizing, keeping the glass layers and spacing correct across phone sizes on both platforms.',
+      'Structured the project on an MVC folder architecture with GetX for reactive state, dependency injection and named routing.',
+      'Integrated Firebase Authentication with session handling and validation, and Cloud Firestore for real-time data.',
+      'Added small entry and transition animations using pub.dev animation packages, which lifted the perceived quality of the interface without hand-rolling every effect.'
+    ],
+    tags: ['Flutter', 'GetX', 'MVC', 'Glassmorphism', 'Responsive UI', 'MediaQuery', 'Firebase Auth', 'Cloud Firestore', 'Animations'],
+    shipped: ['Gymscanner (Android & iOS)']
+  },
+  {
     id: 'simple-alliance',
     role: 'Flutter UI Developer',
     company: 'Simple Alliance',
     type: 'Contract',
-    location: 'Remote',
+    location: 'Nairobi, Kenya · Remote',
     duration: 'May 2021 - September 2021',
     startYear: 2021,
     details: [
