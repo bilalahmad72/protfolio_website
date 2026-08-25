@@ -29,8 +29,11 @@ const wordVariants = {
 
 /**
  * Splits a line into words and swings each one up on the X axis, so headlines
- * arrive as a sequence rather than a single fade. Screen readers get the whole
- * string from the wrapper's aria-label.
+ * arrive as a sequence rather than a single fade.
+ *
+ * No `aria-label` on the wrapper: it is prohibited on elements with no role,
+ * such as the `<p>` this renders as, and Lighthouse flags it. It was never
+ * needed — the words are ordinary text nodes and are announced in order.
  */
 export default function TextReveal({
   text,
@@ -47,7 +50,6 @@ export default function TextReveal({
 
   return (
     <Component
-      aria-label={text}
       className={className}
       style={{ transformStyle: 'preserve-3d' }}
       initial="hidden"
