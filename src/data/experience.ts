@@ -153,6 +153,24 @@ export const experiences: WorkExperience[] = [
     tags: ['Flutter', 'Figma to Flutter', 'Responsive UI', 'Firebase Auth', 'Cloud Firestore', 'Push Notifications', 'GetX', 'Provider']
   },
   {
+    id: 'simple-alliance',
+    role: 'Flutter UI Developer',
+    company: 'Simple Alliance',
+    type: 'Contract',
+    location: 'Remote',
+    duration: 'May 2021 - September 2021',
+    startYear: 2021,
+    details: [
+      'Converted the complete Adobe XD design file for Avunja into pixel-perfect Flutter UI, shipping the same codebase to both Android and iOS.',
+      'Structured the project on an MVC folder architecture — models, views and controllers kept separate — so screens stayed easy to locate and extend as the design grew.',
+      'Implemented state management with GetX, using reactive controllers, dependency injection and named routing to keep the UI layer free of boilerplate.',
+      'Built responsive layouts with MediaQuery and adaptive sizing so every screen held up across phone sizes on both platforms.',
+      'Worked from the XD handoff directly with the design team, matching spacing, typography and component states screen by screen.'
+    ],
+    tags: ['Flutter', 'GetX', 'MVC', 'Adobe XD to Flutter', 'Responsive UI', 'MediaQuery'],
+    shipped: ['Avunja (Android & iOS)']
+  },
+  {
     id: 'freelance',
     role: 'Flutter App Developer — Top Rated Plus & Level 2 Seller',
     company: 'Upwork & Fiverr',

@@ -24,9 +24,10 @@ export const journeyChapters: JourneyChapter[] = [
     period: '2020 — 2022',
     title: 'Learning to ship, not just to code',
     summary:
-      'Freelancing on Upwork and Fiverr while studying, then three production apps at Whooo — Figma to Flutter, Firebase, and my first releases on both stores.',
+      'Freelancing on Upwork and Fiverr while studying, then Avunja at Simple Alliance and three production apps at Whooo — Figma to Flutter, Firebase, and my first releases on both stores.',
     body: [
       'The first two years were freelance work on Upwork and Fiverr alongside university. Small jobs mostly: a screen that would not lay out correctly, a bug someone could not reproduce, a redesign of an app that already existed. That kind of work teaches you a specific thing very quickly — how to read a codebase you did not write and find your way around it without breaking anything.',
+      'Simple Alliance was the first time a client handed me a finished design file and expected the app back. Avunja — an Adobe XD file converted screen by screen into Flutter UI for Android and iOS, GetX for state, MVC for structure. Working from a complete design taught me how much of \u201cpixel-perfect\u201d is just refusing to approximate: the spacing is either the number in the file or it is wrong.',
       'Whooo was the first engagement where I owned real product surface. Three cross-platform apps, each built from Figma designs into fully responsive Flutter UI. That is also where the backend side stopped being abstract: Firebase Authentication with proper session handling, Cloud Firestore for real-time data, and Firebase Cloud Messaging for push notifications.',
       'It is also where I first took an app all the way through Google Play and App Store review, which is its own skill and nothing like writing the app. Signing, provisioning, review rejections, store metadata — none of it is hard, but all of it has to be learned once.'
     ]
