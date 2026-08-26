@@ -12,6 +12,7 @@ const categoryColors: Record<string, string> = {
   'Flutter': 'text-accent-deep bg-accent-100 border-accent-200',
   'Web Development': 'text-slate-700 bg-slate-100 border-slate-200',
   'AI Workflow': 'text-accent-deep bg-accent-100 border-accent-200',
+  'Automation': 'text-accent-deep bg-accent-100 border-accent-200',
 };
 
 const gradientThemes: Record<string, string> = {
