@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     template: `%s — ${SITE.name}`,
   },
   description: SITE.description,
+  // Trims the referrer to the bare origin on outbound clicks, so the full URL
+  // of the page someone was reading never reaches a third-party site.
+  referrer: 'strict-origin-when-cross-origin',
   authors: [{ name: SITE.name, url: SITE.url }],
   creator: SITE.name,
   alternates: { canonical: '/' },
