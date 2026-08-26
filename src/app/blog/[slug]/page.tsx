@@ -171,10 +171,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 case 'code':
                   return (
                     <div key={idx} className="my-8 rounded-2xl overflow-hidden border border-slate-200 bg-code shadow-inner group/code relative">
-                      <div className="flex items-center justify-between px-6 py-3 border-b border-slate-200 bg-code-header">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{section.language || 'code'}</span>
-                        <button 
-                          className="text-slate-500 hover:text-accent transition-colors"
+                      <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-code-header">
+                        <span className="text-xs font-semibold text-[#8792AC] uppercase tracking-wider">{section.language || 'code'}</span>
+                        <button
+                          className="text-[#8792AC] hover:text-[#A9C0FF] transition-colors"
                           title="Copy Code"
                           // Since it's a server component we can implement standard copying or ignore interactive client details
                         >
@@ -205,10 +205,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   );
                 case 'table':
                   return (
-                    <div key={idx} className="my-8 overflow-x-auto rounded-2xl border border-slate-200 bg-code">
+                    <div key={idx} className="my-8 overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="border-b border-slate-200 bg-code-header">
+                          <tr className="border-b border-slate-200 bg-surface-muted">
                             {section.headers?.map((header, headIdx) => (
                               <th key={headIdx} className="px-6 py-4 text-sm font-bold text-slate-800 uppercase tracking-wider">
                                 {header}
