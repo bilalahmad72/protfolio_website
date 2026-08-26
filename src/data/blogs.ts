@@ -22,6 +22,242 @@ export interface BlogPost {
 
 export const blogs: BlogPost[] = [
   {
+    id: 'vibe-coding-setup-files',
+    title: '6 Files to Set Up Before You Vibe Code Any App',
+    category: 'AI Workflow',
+    date: 'August 26, 2026',
+    excerpt: 'Vibe coding falls apart when the AI has to guess what you are building. These six files — PRD, architecture, essentials, agent instructions and a scaffold — give your coding agent the context it needs before a single feature gets written.',
+    imageClass: 'frontend',
+    iconType: 'laptop-code',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Vibe coding is fun until it is not. You describe an app, the AI writes a few hundred lines, everything looks great — and then around feature four the agent starts contradicting itself. It invents a second user model. It picks a different state management library than the one it used yesterday. It rewrites a file it wrote an hour ago because it forgot why the file existed.'
+      },
+      {
+        type: 'paragraph',
+        text: 'None of that is the model being bad at coding. It is the model being asked to make product and architecture decisions on the fly, one prompt at a time, with no written record of what was already decided. The fix is not a better prompt. The fix is giving the agent the same six documents you would hand a new developer joining your team.'
+      },
+      {
+        type: 'quote',
+        text: 'An AI agent is not a bad engineer. It is a brilliant engineer with no memory of yesterday. Write things down and it stops guessing.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'The six files at a glance'
+      },
+      {
+        type: 'table',
+        headers: ['File', 'Question it answers', 'Who it is for'],
+        rows: [
+          ['PRD.md', 'What are we building, and for whom?', 'The product'],
+          ['Architecture.md', 'How is it built, in full detail?', 'The tech'],
+          ['Architecture-essentials.md', 'What are the rules I must never break?', 'The agent, quickly'],
+          ['AGENTS.md', 'How should the agent work in this repo?', 'Any coding agent'],
+          ['CLAUDE.md', 'Same rules, Claude-specific entry point', 'Claude Code'],
+          ['Scaffold', 'Where does every file live?', 'The whole project']
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: '1. PRD.md — what you are actually building'
+      },
+      {
+        type: 'paragraph',
+        text: 'The Product Requirements Document is the only file with no code in it. It describes the product in plain language: what the app does, who uses it, what problem it solves, and what it must be able to do to count as finished. No frameworks, no databases, no folder names — just the product.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Write it before anything technical, because every later decision leans on it. If your PRD says the app works offline, that changes the database. If it says one user can belong to many teams, that changes the data model. Skip the PRD and the agent quietly invents answers to those questions for you.'
+      },
+      {
+        type: 'code',
+        language: 'markdown',
+        code: `# PRD — TaskFlow
+
+## What it is
+A shared to-do app for small teams (2-10 people) who find
+project tools too heavy but group chat too messy.
+
+## Who it is for
+Freelance teams and small agencies. Not enterprise.
+
+## Must do
+- Create a task, assign it to one person, set a due date
+- See every task assigned to me across all projects
+- Work offline and sync when the connection returns
+- Invite a teammate by email
+
+## Explicitly not doing (v1)
+- Time tracking, invoicing, Gantt charts
+- More than one assignee per task`
+      },
+      {
+        type: 'paragraph',
+        text: 'That last section matters more than people expect. Writing down what you are not building is the cheapest way to stop an agent from helpfully adding features you never asked for.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: '2. Architecture.md — how it gets built'
+      },
+      {
+        type: 'paragraph',
+        text: 'Now hand the PRD back to your AI and ask it to design the system. This file is the technical counterpart: the stack, the data models, how the layers talk to each other, how authentication works, how errors are handled. Where the PRD is about the product, this one is about the tech.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Let it be long. This is your reference document, the place you go when you need to remember why a decision was made. Detail is a feature here.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Tech stack, with a one-line reason for each choice.',
+          'Data models and the relationships between them.',
+          'Folder and layer structure — what belongs where.',
+          'How data flows from a tap in the UI to the database and back.',
+          'Auth, permissions, error handling and offline behaviour.',
+          'Anything you decided against, and why you decided against it.'
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: '3. Architecture-essentials.md — the short version the agent actually reads'
+      },
+      {
+        type: 'paragraph',
+        text: 'Here is the practical problem with a thorough architecture document: it is too big to load into context on every single task. If the agent has to read six thousand words to add a button, most of that context is wasted and the important rules get buried.'
+      },
+      {
+        type: 'paragraph',
+        text: 'So make a second, much shorter file. Same decisions, no explanations — an outline the agent can scan in seconds and still get every non-negotiable right.'
+      },
+      {
+        type: 'code',
+        language: 'markdown',
+        code: `# Architecture Essentials
+
+Stack: Flutter + Riverpod + Supabase + Drift (offline cache)
+Structure: feature-first, each feature has data/domain/presentation
+State: Riverpod only. No setState outside local UI animation.
+Networking: repositories only. Widgets never call Supabase directly.
+Errors: repositories return Result<T>, never throw to the UI.
+Naming: snake_case files, PascalCase classes, *_repository.dart`
+      },
+      {
+        type: 'paragraph',
+        text: 'Keep the long file as the source of truth and this one as the quick reference. When a decision changes, change both.'
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: 'The step most people skip: stress-test the plan'
+      },
+      {
+        type: 'paragraph',
+        text: 'Before you write any code, send the architecture back to the AI with three blunt questions in one prompt: what do you think will break, what edge cases are we missing, and what here is over-engineered? Ask it to update both architecture files with the answers.'
+      },
+      {
+        type: 'paragraph',
+        text: 'This is a five-minute conversation that regularly saves a full day. Models are noticeably better at spotting holes in a plan than at avoiding them while writing code, so use them in the mode where they are strong.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: '4 and 5. AGENTS.md and CLAUDE.md — the house rules'
+      },
+      {
+        type: 'paragraph',
+        text: 'These are instructions for the agent itself rather than documentation about the app. They cover how to work in your repo: which commands to run, which conventions to follow, what to never touch, and what to read before writing code.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Do not maintain two copies. Write the real content in one file and make the other point at it — one line is enough, and it means you can never end up with two sets of rules that disagree.'
+      },
+      {
+        type: 'code',
+        language: 'markdown',
+        code: `# CLAUDE.md
+@AGENTS.md
+
+# AGENTS.md
+## Before writing code
+Read Architecture-essentials.md. For anything structural,
+read the matching section of Architecture.md too.
+
+## Rules
+- Never edit files in /generated — they are build output.
+- Run "dart format ." and "flutter analyze" before finishing.
+- New feature = new folder under lib/features/, matching the
+  data/domain/presentation layout of existing features.
+- If a requirement is ambiguous, ask. Do not invent product behaviour.`
+      },
+      {
+        type: 'paragraph',
+        text: 'Keep these files short and specific. Vague advice like "write clean code" changes nothing; "run flutter analyze before finishing" changes every single task.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: '6. Scaffold — build the skeleton before the features'
+      },
+      {
+        type: 'paragraph',
+        text: 'The last one is not a document. Ask the agent to create the actual project structure: the folders, the data models, the entry points, the config files. Empty folders are fine. Files with nothing but a class name and a TODO are fine.'
+      },
+      {
+        type: 'paragraph',
+        text: 'The point is that the shape of the project exists before any feature does. When you then say "build the login screen", the agent is not choosing where things go — it can already see where things go. That single change eliminates most of the structural drift that makes AI-generated codebases feel incoherent after a week.'
+      },
+      {
+        type: 'code',
+        language: 'text',
+        code: `lib/
+  core/
+    theme/
+    router/
+    errors/
+  features/
+    auth/
+      data/
+      domain/
+      presentation/
+    tasks/
+      data/
+      domain/
+      presentation/
+  main.dart`
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Why this works'
+      },
+      {
+        type: 'paragraph',
+        text: 'Every one of these files does the same job from a different angle: it moves a decision out of the conversation and into the repository. A decision in a chat message is gone by tomorrow. A decision in a file is there on every future task, for every future agent, and for you when you come back to the project in three months.'
+      },
+      {
+        type: 'list',
+        items: [
+          'PRD.md — the product, in plain language.',
+          'Architecture.md — the full technical design.',
+          'Architecture-essentials.md — the same rules, scannable in seconds.',
+          'AGENTS.md — how the agent works in this repo.',
+          'CLAUDE.md — one line pointing at AGENTS.md.',
+          'Scaffold — the folders and files, created up front.'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'It is maybe an hour of setup, and most of that hour is you reviewing what the AI drafted. In exchange the agent stops guessing, stops contradicting itself, and starts behaving like a developer who has actually read the project. That is the difference between vibe coding a demo and vibe coding something you can keep building on.'
+      }
+    ]
+  },
+  {
     id: 'flutter-three-trees',
     title: 'The Three Trees: How Flutter Actually Renders Your UI',
     category: 'Flutter',
