@@ -22,6 +22,371 @@ export interface BlogPost {
 
 export const blogs: BlogPost[] = [
   {
+    id: 'install-n8n-locally-docker',
+    title: 'How to Install n8n Locally on Windows with Docker (Free, Unlimited)',
+    category: 'Automation',
+    date: 'August 26, 2026',
+    excerpt: 'A complete walkthrough for running n8n on your own Windows PC with Docker and PostgreSQL — no subscription, no execution limits, no data leaving your machine. Includes the errors I actually hit, how I fixed them, and your first working workflow.',
+    imageClass: 'state',
+    iconType: 'sitemap',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'n8n is an open-source workflow automation tool — think Zapier or Make, except you can run the whole thing yourself. The hosted version bills you per execution. The version you install on your own machine does not bill you at all: unlimited workflows, unlimited runs, every core node including the AI Agent nodes, and none of your data ever leaving your PC.'
+      },
+      {
+        type: 'paragraph',
+        text: 'This is the exact setup I run on Windows 11 with 16 GB of RAM. It uses Docker to run two containers — n8n itself and a PostgreSQL database behind it — so the setup mirrors how you would deploy it on a real server. Total cost: zero. Expect it to take about half an hour, most of which is waiting on downloads.'
+      },
+      {
+        type: 'quote',
+        text: 'Running n8n locally is not a limited trial version. It is the same software the paid cloud plan runs, with the billing meter removed and your data kept on your own disk.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'What you need before starting'
+      },
+      {
+        type: 'table',
+        headers: ['Component', 'Minimum', 'Comfortable'],
+        rows: [
+          ['OS', 'Windows 10', 'Windows 11'],
+          ['RAM', '4 GB free', '16 GB total system RAM'],
+          ['CPU', '2 cores', '4 cores'],
+          ['Storage', '20-25 GB free', '40 GB+ free on an SSD'],
+          ['Internet', 'Needed for setup', 'Any stable connection']
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'n8n itself is light. The reason 16 GB is the comfortable number is everything else you keep open next to it — Docker Desktop, VS Code, Android Studio, a browser with too many tabs. On 8 GB it runs, but you will feel it.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'What actually gets installed'
+      },
+      {
+        type: 'list',
+        items: [
+          'WSL2 — the Linux layer Windows needs so Docker can run Linux containers.',
+          'Docker Desktop — the container runtime. Free for personal use and small businesses.',
+          'Docker Compose — bundled with Docker Desktop; starts both containers with one command.',
+          'n8n Community Edition — pulled as a Docker image, so there is no separate installer.',
+          'PostgreSQL 16 — the database behind n8n, also just a Docker image.'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Only the first two are things you install by hand. n8n and Postgres arrive automatically when you run the compose file in step 5.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 1 — Enable WSL2'
+      },
+      {
+        type: 'paragraph',
+        text: 'Open PowerShell as Administrator (right-click the Start button, choose Terminal (Admin)) and run:'
+      },
+      {
+        type: 'code',
+        language: 'powershell',
+        code: `wsl --install`
+      },
+      {
+        type: 'paragraph',
+        text: 'This installs WSL2 along with Ubuntu as the default Linux distribution. Restart when it asks you to. On the first boot Ubuntu will ask you to create a username and password — this is local to Ubuntu only and has nothing to do with your Windows login, but write it down anyway.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 2 — Install Docker Desktop'
+      },
+      {
+        type: 'list',
+        items: [
+          'Download it from docker.com/products/docker-desktop.',
+          'Run the installer and leave "Use WSL 2 instead of Hyper-V" checked — it is the default.',
+          'Restart the computer once the installer finishes.',
+          'Docker Desktop starts on its own. Wait for the whale icon in the system tray to stop animating, which means the engine is fully up.'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'If Docker asks you to create an account and the signup fails with a server error, ignore it and click Skip. That failure is on Docker\u2019s side and an account is not required for local use. Mine failed and the setup worked perfectly without one.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 3 — Fix the WSL integration conflict (if you hit it)'
+      },
+      {
+        type: 'paragraph',
+        text: 'If Docker Desktop shows "WSL integration with distro Ubuntu-22.04 unexpectedly stopped", you have two Ubuntu distributions installed and both are fighting to integrate with Docker at once. It is a common state on machines that had WSL before.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Click "Skip WSL distro integration" on the error dialog to stop the immediate conflict.',
+          'Open Docker Desktop → Settings → Resources → WSL Integration.',
+          'Turn on "Enable integration with my default WSL distro".',
+          'In the list of additional distros, enable only Ubuntu. Leave Ubuntu-22.04 unchecked.',
+          'Click Apply & Restart.'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'If you only have one Ubuntu, you will never see this error — skip straight to step 4.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 4 — Verify Docker works'
+      },
+      {
+        type: 'paragraph',
+        text: 'Do not skip this. It takes ten seconds and it separates "Docker is broken" from "my compose file is wrong" later on.'
+      },
+      {
+        type: 'code',
+        language: 'powershell',
+        code: `docker --version
+docker run hello-world`
+      },
+      {
+        type: 'paragraph',
+        text: 'You want the container to download and print "Hello from Docker!". If instead you get a TLS handshake timeout — which is what happened to me on a fresh install — do not go hunting through firewall settings. The cause is almost always a stale WSL2 network state left over from the install. Fix it with:'
+      },
+      {
+        type: 'code',
+        language: 'powershell',
+        code: `wsl --shutdown`
+      },
+      {
+        type: 'paragraph',
+        text: 'Then reopen Docker Desktop, wait for the engine to come fully up, and run the hello-world command again. It worked on the first retry for me. Worth knowing while you debug this: a failed ping to registry-1.docker.io proves nothing, because ICMP is commonly blocked even when HTTPS is fine, and a 401 Unauthorized from that registry is the healthy response, not an error.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 5 — Create the project folder and compose file'
+      },
+      {
+        type: 'code',
+        language: 'powershell',
+        code: `mkdir C:\\n8n-local
+cd C:\\n8n-local`
+      },
+      {
+        type: 'paragraph',
+        text: 'Inside that folder create a file named docker-compose.yml with exactly this content. It defines the two services, wires them together, and gives each one a persistent volume so nothing is lost when you stop the containers.'
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        code: `services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=n8n_password
+      - POSTGRES_DB=n8n
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U n8n -d n8n']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=n8n
+      - DB_POSTGRESDB_PASSWORD=n8n_password
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  n8n_data:`
+      },
+      {
+        type: 'paragraph',
+        text: 'Two details in there are worth understanding rather than just copying. The healthcheck plus depends_on means n8n waits until Postgres is genuinely accepting connections before it starts, instead of crash-looping for the first few seconds. And the two named volumes are why your workflows survive a restart — the containers are disposable, the volumes are not.'
+      },
+      {
+        type: 'paragraph',
+        text: 'The password in this file is fine for a local-only instance. If you ever expose this beyond your own machine, change it and move it into an environment file first.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 6 — Start it up'
+      },
+      {
+        type: 'code',
+        language: 'powershell',
+        code: `docker compose up -d`
+      },
+      {
+        type: 'paragraph',
+        text: 'The first run downloads both images, which takes a few minutes — they are large. After that, starting is nearly instant. The -d flag runs them in the background so you get your terminal back. Check that both came up:'
+      },
+      {
+        type: 'code',
+        language: 'powershell',
+        code: `docker compose ps`
+      },
+      {
+        type: 'paragraph',
+        text: 'You should see n8n-local-postgres-1 as "Up (healthy)" and n8n-local-n8n-1 as "Up" with port 5678 mapped. If n8n is restarting in a loop, read its logs with docker compose logs -f n8n — the reason is almost always a typo in the database environment variables.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 7 — Open the interface and create your account'
+      },
+      {
+        type: 'paragraph',
+        text: 'Open your browser at http://localhost:5678. This is the n8n interface, and it is the same URL every time from now on. On first visit you get a setup screen asking you to create an owner account with an email and password.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Read this part carefully: that account lives only inside your local Postgres container. It has nothing to do with n8n Cloud at app.n8n.cloud — different system, no shared login, no sync. There is also no "forgot password" email, because there is no server to send one. Save those credentials somewhere you will find them again.'
+      },
+      {
+        type: 'paragraph',
+        text: 'After signing in, n8n offers a free Community Edition licence key by email. You can skip it — it unlocks enterprise features like SSO, advanced permissions and environments, none of which matter for personal or learning use. Everything you actually need is already unlocked.'
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: 'Finding your way around'
+      },
+      {
+        type: 'list',
+        items: [
+          'Overview is the landing page — every workflow you create is listed here.',
+          'Workflows is where you build. Hit "Create Workflow" to open a blank canvas.',
+          'Executions is the run history — every time a workflow fires, the full input and output of each node is recorded here. This is where you debug.',
+          'Credentials is where API logins are stored once and reused across workflows.',
+          'On the canvas, the + button on the top right opens the node panel, and clicking any node opens a three-panel view: INPUT on the left, the node settings in the middle, OUTPUT on the right.'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'That three-panel node view is the single most useful thing in the app. Almost every problem you will have comes down to the data arriving in INPUT not being shaped the way you assumed, and that panel shows you the truth immediately.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Your first workflow'
+      },
+      {
+        type: 'paragraph',
+        text: 'One small workflow is enough to confirm the install works and to teach you the loop every n8n build follows: a trigger starts it, a node transforms the data, and you inspect what came out.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Click Create Workflow, then the + on the canvas.',
+          'Search for "Manual" and add the Manual Trigger — it just means the workflow runs when you click the button.',
+          'Click the + on the trigger\u2019s right edge, search for "Edit Fields", and add the Edit Fields (Set) node.',
+          'Inside it, add a field: name it message, type String, value Hello from n8n.',
+          'Close the node and click Execute Workflow at the bottom of the canvas.'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Both nodes turn green and the OUTPUT panel of the Edit Fields node shows your data:'
+      },
+      {
+        type: 'code',
+        language: 'json',
+        code: `[
+  {
+    "message": "Hello from n8n"
+  }
+]`
+      },
+      {
+        type: 'paragraph',
+        text: 'That is the whole model. Data moves between nodes as a list of JSON items, each node reads what the one before it produced, and you reference values in later nodes with an expression like {{ $json.message }}. Every workflow you ever build in n8n — Gmail triggers, HTTP calls, AI agents, error handlers — is that same loop with more interesting nodes in the middle.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Save the workflow with Ctrl+S so it persists in Postgres, then go look at it in Executions. Seeing your own test run in the history is the fastest way to get comfortable with where to look when something later goes wrong.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Commands you will actually use'
+      },
+      {
+        type: 'table',
+        headers: ['What you want', 'Command'],
+        rows: [
+          ['Start n8n and Postgres', 'docker compose up -d'],
+          ['Stop them (data is kept)', 'docker compose down'],
+          ['Stop and wipe everything', 'docker compose down -v'],
+          ['See what is running', 'docker compose ps'],
+          ['Watch the n8n logs', 'docker compose logs -f n8n'],
+          ['Restart both containers', 'docker compose restart'],
+          ['Update to the latest n8n', 'docker compose pull, then docker compose up -d']
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'All of these must be run from C:\\n8n-local, because that is where the compose file lives. The one to be careful with is docker compose down -v — the -v deletes the volumes, which means every workflow and credential goes with them. Plain docker compose down is the safe way to shut n8n off when you are not using it.'
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Problems you are likely to hit'
+      },
+      {
+        type: 'table',
+        headers: ['Problem', 'Cause', 'Fix'],
+        rows: [
+          ['Docker account signup fails', 'A server-side error on Docker\u2019s end', 'Skip it — no account is needed locally'],
+          ['"WSL integration unexpectedly stopped"', 'Two Ubuntu distros integrating at once', 'Enable only one distro in WSL Integration settings'],
+          ['hello-world: TLS handshake timeout', 'Stale WSL2 network state after install', 'Run wsl --shutdown, restart Docker Desktop'],
+          ['localhost:5678 will not load', 'Containers not up yet, or n8n crash-looping', 'Check docker compose ps, then the n8n logs'],
+          ['n8n restarts over and over', 'Wrong database credentials in the compose file', 'Compare the DB_POSTGRESDB_* values against the postgres service'],
+          ['Everything vanished after a restart', 'Containers were removed with -v', 'Use docker compose down without -v next time']
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Where this leaves you'
+      },
+      {
+        type: 'paragraph',
+        text: 'You now have a private, unlimited automation environment on your own machine, backed by a real database, that costs nothing to run and keeps every byte of data local. The only money that ever enters the picture is if you later connect a paid LLM API for AI workflows — n8n itself stays free no matter how much you use it.'
+      },
+      {
+        type: 'paragraph',
+        text: 'From here, the natural next steps are the HTTP Request node for calling real APIs, the Schedule Trigger for anything recurring, and the Webhook node for letting outside services start your workflows. But they all read the same way as the two-node workflow you just built, so start by breaking that one and fixing it — it is a faster teacher than any tutorial.'
+      }
+    ]
+  },
+  {
     id: 'vibe-coding-setup-files',
     title: '6 Files to Set Up Before You Vibe Code Any App',
     category: 'AI Workflow',
