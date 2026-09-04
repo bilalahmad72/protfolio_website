@@ -1,6 +1,6 @@
 # bilalahmad72.com
 
-Personal portfolio for Bilal Ahmad — Senior Flutter Developer. A statically
+Personal portfolio for Bilal Ahmad — Flutter Developer. A statically
 exported Next.js site with a three.js background layer and a token-driven design
 system that ships in both a light and a dark theme.
 
