@@ -34,7 +34,7 @@ export default function Footer() {
               Bilal Ahmad
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed max-w-xs">
-              Senior Flutter Developer specializing in Clean Architecture and responsive cross-platform architectures.
+              Flutter Developer specializing in Clean Architecture and responsive cross-platform architectures.
             </p>
           </div>
 

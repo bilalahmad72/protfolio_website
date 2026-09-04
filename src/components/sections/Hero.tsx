@@ -78,7 +78,7 @@ export default function Hero() {
                     <source srcSet="/images/profile.webp" type="image/webp" />
                     <img
                       src="/images/profile.jpg"
-                      alt="Bilal Ahmad, Senior Flutter Developer"
+                      alt="Bilal Ahmad, Flutter Developer"
                       width={800}
                       height={800}
                       fetchPriority="high"
@@ -101,7 +101,7 @@ export default function Hero() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
                 </span>
-                <span className="text-xs font-semibold text-accent">Senior Developer</span>
+                <span className="text-xs font-semibold text-accent">Flutter Developer</span>
               </motion.div>
 
               <motion.div
@@ -136,7 +136,7 @@ export default function Hero() {
             <div className="space-y-2">
               <TextReveal
                 as="h1"
-                text="Hi, I am Bilal Ahmad — Senior Flutter Developer"
+                text="Hi, I am Bilal Ahmad — Flutter Developer"
                 delay={0.3}
                 className="text-4xl font-extrabold leading-[1.08] tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-[4.25rem]"
                 highlight={['Bilal', 'Ahmad']}
@@ -153,7 +153,7 @@ export default function Hero() {
 
             <Reveal delay={0.95} blur={0} distance={20}>
               <p className="mx-auto max-w-2xl text-pretty text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
-                Senior Flutter Developer with{' '}
+                Flutter Developer with{' '}
                 <span className="text-accent">4+ years</span> building production mobile apps. I
                 specialize in <span className="text-accent">Clean Architecture</span>,{' '}
                 <span className="text-accent">REST &amp; GraphQL API</span> integration, and custom

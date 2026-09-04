@@ -9,12 +9,12 @@
 export const SITE = {
   url: 'https://bilalahmad72.com',
   name: 'Bilal Ahmad',
-  jobTitle: 'Senior Flutter Developer',
+  jobTitle: 'Flutter Developer',
   locale: 'en_US',
   description:
-    'Senior Flutter Developer with 4+ years building production mobile apps — Clean Architecture, REST & GraphQL API integration, and custom Flutter animations. Comfortable across Riverpod, BLoC and Provider, and vibe coding with Claude Code, Codex, Antigravity and Cursor.',
+    'Flutter Developer with 4+ years building production mobile apps — Clean Architecture, REST & GraphQL API integration, and custom Flutter animations. Comfortable across Riverpod, BLoC and Provider, and vibe coding with Claude Code, Codex, Antigravity and Cursor.',
   ogImage: '/og-image.png',
-  ogImageAlt: 'Bilal Ahmad — Senior Flutter Developer, bilalahmad72.com',
+  ogImageAlt: 'Bilal Ahmad — Flutter Developer, bilalahmad72.com',
 } as const;
 
 /** Profiles used as `sameAs` in the Person schema, and linked across the site. */
