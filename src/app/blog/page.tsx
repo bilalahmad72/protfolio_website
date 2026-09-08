@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { SITE, absoluteUrl } from '@/lib/site';
 import BlogIndexView from './BlogIndexView';
+import AdSenseScript from '@/components/ads/AdSenseScript';
 
 const TITLE = 'Flutter Development Notes';
 const DESCRIPTION =
@@ -32,5 +33,10 @@ export const metadata: Metadata = {
 };
 
 export default function BlogIndexPage() {
-  return <BlogIndexView />;
+  return (
+    <>
+      <AdSenseScript />
+      <BlogIndexView />
+    </>
+  );
 }

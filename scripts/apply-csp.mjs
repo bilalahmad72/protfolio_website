@@ -14,7 +14,7 @@
  */
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, readdir } from 'node:fs/promises';
-import { join, relative } from 'node:path';
+import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const OUT_DIR = fileURLToPath(new URL('../out/', import.meta.url));
@@ -28,8 +28,39 @@ const INLINE_SCRIPT = /<script(?![^>]*\ssrc[\s=])([^>]*)>([\s\S]*?)<\/script>/gi
 // bytes, so the CSP slots in directly behind it.
 const HEAD_ANCHOR = /(<head[^>]*>\s*(?:<meta\s+charSet=(?:"[^"]*"|'[^']*')\s*\/?>)?)/i;
 
-function policy(hashes) {
+// Hosts AdSense reaches for. Applied only to the pages that actually carry the
+// tag (see ADS_PATH) — the portfolio pages keep the tighter policy, so a
+// compromise of an ad host cannot reach the home page.
+const ADS = {
+  script: [
+    'https://pagead2.googlesyndication.com',
+    'https://partner.googleadservices.com',
+    'https://tpc.googlesyndication.com',
+    'https://adservice.google.com',
+    'https://www.googletagservices.com',
+    'https://fundingchoicesmessages.google.com',
+  ],
+  frame: [
+    'https://googleads.g.doubleclick.net',
+    'https://tpc.googlesyndication.com',
+    'https://www.google.com',
+  ],
+  connect: [
+    'https://pagead2.googlesyndication.com',
+    'https://googleads.g.doubleclick.net',
+    'https://ep1.adtrafficquality.google',
+    'https://ep2.adtrafficquality.google',
+    'https://csi.gstatic.com',
+  ],
+  // Creatives come from arbitrary advertiser CDNs; there is no list to
+  // enumerate, so images are the one directive that has to open to https:.
+  img: ['https:'],
+  font: ['https://fonts.gstatic.com'],
+};
+
+function policy(hashes, ads = false) {
   const scriptSrc = ["'self'", "'wasm-unsafe-eval'", ...hashes];
+  if (ads) scriptSrc.push(...ADS.script);
   return [
     `default-src 'self'`,
     `script-src ${scriptSrc.join(' ')}`,
@@ -38,16 +69,20 @@ function policy(hashes) {
     // the animation layer; inline styles are a far weaker vector than scripts.
     `style-src 'self' 'unsafe-inline'`,
     // data: for the film-grain SVG in globals.css, blob: for three.js textures.
-    `img-src 'self' data: blob:`,
-    `font-src 'self'`,
-    `connect-src 'self' data: blob:`,
+    `img-src 'self' data: blob:${ads ? ' ' + ADS.img.join(' ') : ''}`,
+    `font-src 'self'${ads ? ' ' + ADS.font.join(' ') : ''}`,
+    `connect-src 'self' data: blob:${ads ? ' ' + ADS.connect.join(' ') : ''}`,
     `worker-src 'self' blob:`,
     `media-src 'self'`,
     `manifest-src 'self'`,
+    // Ads render inside Google-served iframes; without frame-src they are
+    // blocked outright. Absent the ad pages, nothing may be framed at all.
+    `frame-src ${ads ? ADS.frame.join(' ') : "'none'"}`,
     `object-src 'none'`,
     `base-uri 'self'`,
-    // No form is ever submitted — the contact form only opens a wa.me URL.
-    `form-action 'none'`,
+    // No form of ours is ever submitted — the contact form only opens a wa.me
+    // URL. Ad pages must allow the ad frames' own click-through posts.
+    `form-action ${ads ? "'self' https:" : "'none'"}`,
     `upgrade-insecure-requests`,
   ].join('; ');
 }
@@ -62,8 +97,17 @@ async function htmlFiles(dir) {
   return found;
 }
 
+// Only /blog carries the AdSense tag — see src/lib/adsense.ts. Keyed on the
+// path segment rather than on the markup, because an ad unit with no slot ID
+// yet renders nothing — matching on markup would leave those pages with a
+// policy too tight for the day the slot is filled in.
+const ADS_PATH = 'blog';
+
 async function applyTo(file) {
   const html = await readFile(file, 'utf8');
+  // `relative` returns platform separators, so split on `sep` rather than a
+  // hardcoded slash — the check has to hold on Windows and in CI alike.
+  const ads = relative(OUT_DIR, file).split(sep).includes(ADS_PATH);
 
   // Running twice over the same out/ would otherwise stack a second policy,
   // and two CSP tags intersect rather than replace — the page would break.
@@ -78,7 +122,7 @@ async function applyTo(file) {
   }
 
   const meta =
-    `<meta http-equiv="Content-Security-Policy" content="${policy([...hashes])}"/>`;
+    `<meta http-equiv="Content-Security-Policy" content="${policy([...hashes], ads)}"/>`;
 
   if (!HEAD_ANCHOR.test(html)) {
     // Verification files (Google Search Console and the like) land in out/

@@ -7,6 +7,8 @@ import { ArrowLeft, Calendar, Smartphone, Layers, Laptop, ArrowRight } from 'luc
 import { blogs } from '@/data/blogs';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
+import AdUnit from '@/components/ads/AdUnit';
+import { AD_SLOTS } from '@/lib/adsense';
 
 
 const categoryColors: Record<string, string> = {
@@ -135,6 +137,8 @@ export default function BlogIndexView() {
               </motion.div>
             ))}
           </motion.div>
+
+          <AdUnit slot={AD_SLOTS.blogIndex} format="auto" className="mt-16" />
         </div>
       </div>
       <Footer />

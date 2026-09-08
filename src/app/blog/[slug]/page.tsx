@@ -10,6 +10,9 @@ import { blogPostingSchema, breadcrumbSchema } from '@/lib/schema';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
+import AdSenseScript from '@/components/ads/AdSenseScript';
+import AdUnit from '@/components/ads/AdUnit';
+import { AD_SLOTS } from '@/lib/adsense';
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
@@ -74,8 +77,18 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     notFound();
   }
 
+  /*
+   * The in-article unit goes after the second paragraph, which is where
+   * AdSense's own placement guidance puts it — far enough in that the reader
+   * has started the piece. `?? -1` means a post with fewer than two paragraphs
+   * simply carries no in-article ad rather than one jammed against the header.
+   */
+  const adAfter =
+    post.content.flatMap((s, i) => (s.type === 'paragraph' ? [i] : []))[1] ?? -1;
+
   return (
     <>
+      <AdSenseScript />
       <JsonLd data={blogPostingSchema(post)} />
       <JsonLd
         data={breadcrumbSchema([
@@ -150,9 +163,18 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               switch (section.type) {
                 case 'paragraph':
                   return (
-                    <p key={idx} className="text-slate-700 leading-relaxed mb-6">
-                      {section.text}
-                    </p>
+                    <React.Fragment key={idx}>
+                      <p className="text-slate-700 leading-relaxed mb-6">
+                        {section.text}
+                      </p>
+                      {idx === adAfter && (
+                        <AdUnit
+                          slot={AD_SLOTS.articleTop}
+                          format="fluid"
+                          layout="in-article"
+                        />
+                      )}
+                    </React.Fragment>
                   );
                 case 'heading':
                   if (section.level === 2) {
@@ -235,6 +257,8 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               }
             })}
           </div>
+
+          <AdUnit slot={AD_SLOTS.articleEnd} format="auto" className="mt-14" />
         </div>
       </article>
       <Footer />
