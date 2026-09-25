@@ -90,6 +90,23 @@ export const projects: Project[] = [
     ]
   },
   {
+    id: 'prehab',
+    title: 'Prehab — Physical Therapy & Pain',
+    description:
+      'A physical therapy and injury-prevention app on Android and iOS, built with Flutter from a single codebase. It serves 50+ structured programs, 100+ workouts, 80+ follow-along classes and a 4,000+ exercise video library led by doctors of physical therapy, plus a BodyScan intake flow that recommends the right program for each user — all delivered through a responsive, video-heavy interface.',
+    image: '/images/prehab-app.svg',
+    androidUrl:
+      'https://play.google.com/store/apps/details?id=com.prehabguys.prehabapp',
+    iosUrl: 'https://apps.apple.com/pk/app/prehab-physical-therapy-pain/id1626839977',
+    tags: [
+      'Flutter',
+      'Video Streaming',
+      'Health & Fitness',
+      'REST API',
+      'Responsive UI'
+    ]
+  },
+  {
     id: 'orizon-digital-bank',
     roleId: 'qognitiv',
     title: 'ORIZON — Digital Bank Account',
