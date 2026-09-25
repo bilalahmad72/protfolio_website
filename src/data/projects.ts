@@ -95,7 +95,7 @@ export const projects: Project[] = [
     title: 'Prehab — Physical Therapy & Pain',
     description:
       'A physical therapy and injury-prevention app on Android and iOS. My scope was the Flutter UI: building the screens that carry its exercise programs, workouts, follow-along classes and video library, and bringing them to life with smooth animations and transitions throughout the interface.',
-    image: '/images/prehab-app.svg',
+    image: '/images/prehab-app.webp',
     androidUrl:
       'https://play.google.com/store/apps/details?id=com.prehabguys.prehabapp',
     iosUrl: 'https://apps.apple.com/pk/app/prehab-physical-therapy-pain/id1626839977',
