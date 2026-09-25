@@ -136,6 +136,22 @@ export const experiences: WorkExperience[] = [
     tags: ['Flutter', 'Provider', 'GetX', 'Figma to Flutter', 'Animations', 'POS']
   },
   {
+    id: 'prehab',
+    role: 'Flutter UI Developer',
+    company: 'Prehab (via Freelance Team)',
+    type: 'Freelance',
+    location: 'Remote',
+    duration: 'February 2022 - April 2022',
+    startYear: 2022,
+    details: [
+      'Hired on a freelance contract by a senior project manager to work on the Prehab physical therapy app, alongside other freelance developers on the project team rather than directly with the company.',
+      'Built the Flutter UI for the app\'s screens — exercise programs, workouts, follow-along classes and the video library — across Android and iOS.',
+      'Added smooth animations and transitions throughout the interface to give the app a polished, fluid feel.'
+    ],
+    tags: ['Flutter', 'Flutter UI', 'Animations'],
+    shipped: ['Prehab — Physical Therapy & Pain (Android & iOS)']
+  },
+  {
     id: 'whooo',
     role: 'Flutter UI Developer',
     company: 'Whooo',
